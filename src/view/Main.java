@@ -16,9 +16,10 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/MainView.fxml"));
         Pane mainPane = loader.load();
         Scene scene = new Scene(mainPane);
-        stage.initStyle(StageStyle.UNDECORATED);
+//        stage.initStyle(StageStyle.UNDECORATED);
         stage.setTitle("MyGame");
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
     }
 }

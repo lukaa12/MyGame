@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="menuPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuController">
+   <children>
+      <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/nosacz.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="newGame" layoutX="210.0" layoutY="300.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="300.0" text="NOWA GRA">
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font>
+      </Button>
+      <Button fx:id="loadGame" layoutX="210.0" layoutY="450.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="300.0" text="WCZYTAJ GRĘ">
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font>
+      </Button>
+      <Button fx:id="settings" layoutX="210.0" layoutY="600.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="300.0" text="OPCJE">
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font>
+      </Button>
+      <Button fx:id="exit" layoutX="210.0" layoutY="750.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="300.0" text="WYJŚCIE">
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font>
+      </Button>
+      <Label layoutX="584.0" layoutY="203.0" text="Janusz The Game" textFill="#521fc2">
+         <font>
+            <Font name="Broadway" size="96.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>
