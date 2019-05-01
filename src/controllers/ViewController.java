@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class ViewController {
     @FXML
-    private StackPane mainStackPane;
+    StackPane mainStackPane;
 
     @FXML
     public void initialize() {
@@ -20,6 +20,8 @@ public class ViewController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        MenuController menuController = loader.getController();
+        menuController.setViewController(this);
         mainStackPane.getChildren().addAll(menuPane);
     }
 }
