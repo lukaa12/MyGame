@@ -11,15 +11,15 @@ public class MenuController {
     @FXML
     private Pane menuPane;
     @FXML
-    private Button exitButton;
+    private Button exit;
     @FXML
     public void initialize() {
         EventHandler<ActionEvent> menuHandler = actionEvent -> {
-            if(actionEvent.getSource().equals(exitButton)) {
+            if(actionEvent.getSource().equals(exit)) {
                 Platform.exit();
             }
         };
-        exitButton.addEventHandler(ActionEvent.ACTION,menuHandler);
+        exit.addEventHandler(ActionEvent.ACTION,menuHandler);
     }
 
 
