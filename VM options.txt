@@ -1,0 +1,4 @@
+--module-path
+"C:\Program Files\Java\javafx-sdk-11.0.2\lib"
+--add-modules
+javafx.graphics,javafx.base,javafx.controls,javafx.fxml,javafx.media,javafx.swing,javafx.web
