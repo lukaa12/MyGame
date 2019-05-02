@@ -29,7 +29,7 @@ public class MenuController {
                 Platform.exit();
             }
             if(actionEvent.getSource().equals(settings)) {
-                System.out.println("Ustawienia");
+//                System.out.println("Ustawienia");
                 FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/OptionsScreen.fxml"));
                 Pane optionsPane = null;
                 try {
@@ -42,9 +42,23 @@ public class MenuController {
                 viewController.mainStackPane.getChildren().clear();
                 viewController.mainStackPane.getChildren().add(optionsPane);
             }
+            if(actionEvent.getSource().equals(newGame)) {
+                FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/NewGameScreen.fxml"));
+                Pane newGamePane = null;
+                try {
+                    newGamePane = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                GameController controller = loader.getController();
+                controller.setViewController(viewController);
+                viewController.mainStackPane.getChildren().clear();
+                viewController.mainStackPane.getChildren().add(newGamePane);
+            }
         };
         exit.addEventHandler(ActionEvent.ACTION,menuHandler);
         settings.addEventHandler(ActionEvent.ACTION,menuHandler);
+        newGame.addEventHandler(ActionEvent.ACTION,menuHandler);
     }
 
 
