@@ -10,7 +10,6 @@ import java.io.IOException;
 public class ViewController {
     @FXML
     StackPane mainStackPane;
-
     @FXML
     public void initialize() {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/MenuScreen.fxml"));
@@ -24,4 +23,5 @@ public class ViewController {
         menuController.setViewController(this);
         mainStackPane.getChildren().addAll(menuPane);
     }
+
 }
