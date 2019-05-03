@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import models.Player;
+import models.Steerable;
 
 import java.io.IOException;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 public class GameController {
     private ViewController viewController;
     private ImageView playerTransform;
+    private Steerable object;
     @FXML
     private Pane newGamePane;
     @FXML
@@ -23,6 +25,7 @@ public class GameController {
         Player player = new Player();
         playerTransform = new ImageView(new Image(this.getClass().getResource("/resources/player.png").toString()));
         newGamePane.getChildren().add(playerTransform);
+        object = player;
     }
 
     void setViewController(ViewController viewController) {

@@ -1,9 +1,9 @@
 package models;
 
 public class Player implements Steerable {
-    private int x;
-    private int y;
-    private int rotation;
+    private int x = 960;
+    private int y = 540;
+    private int rotation = 180;
     private boolean  isRunning, isSquating, isJumping;
     private boolean up, down, left, right;
 
@@ -64,5 +64,33 @@ public class Player implements Steerable {
     @Override
     public void setSquat(boolean set) {
         isSquating= set;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public boolean isSquating() {
+        return isSquating;
+    }
+
+    public boolean isJumping() {
+        return isJumping;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public boolean isLeft() {
+        return left;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public boolean isUp() {
+        return up;
     }
 }
