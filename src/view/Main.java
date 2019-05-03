@@ -1,5 +1,6 @@
 package view;
 
+import controllers.ViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -22,6 +23,8 @@ public class Main extends Application {
         Image icon = new Image("/resources/icon.png");
         stage.getIcons().add(icon);
         stage.setScene(scene);
+        ViewController viewController = loader.getController();
+        viewController.setScene(scene);
         stage.show();
     }
 }
