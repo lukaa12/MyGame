@@ -26,10 +26,11 @@ public class MenuController {
     public void initialize() {
         EventHandler<ActionEvent> menuHandler = actionEvent -> {
             if(actionEvent.getSource().equals(exit)) {
+                viewController.getGameEngine().endGame();
+
                 Platform.exit();
             }
             if(actionEvent.getSource().equals(settings)) {
-//                System.out.println("Ustawienia");
                 FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/OptionsScreen.fxml"));
                 Pane optionsPane = null;
                 try {
@@ -62,7 +63,7 @@ public class MenuController {
     }
 
 
-    public void setViewController(ViewController viewController) {
+    void setViewController(ViewController viewController) {
         this.viewController = viewController;
     }
 }

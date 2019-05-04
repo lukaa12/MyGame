@@ -1,6 +1,7 @@
 package view;
 
 import controllers.ViewController;
+import engine.GameEngine;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,7 +11,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class Main extends Application {
+    private static GameEngine gameEngine;
+
     public static void main(String[] args) {
+        gameEngine = new GameEngine();
+        Thread engineThread = new Thread(gameEngine);
+        engineThread.start();
         launch(args);
     }
     @Override
@@ -25,6 +31,7 @@ public class Main extends Application {
         stage.setScene(scene);
         ViewController viewController = loader.getController();
         viewController.setScene(scene);
+        viewController.setGameEngine(gameEngine);
         stage.show();
     }
 }

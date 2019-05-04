@@ -3,9 +3,16 @@ package engine;
 import java.util.Vector;
 
 public class GameEngine implements Runnable {
-    private boolean isPaused = false;
-    private boolean exit = false;
+    private volatile boolean isPaused = false;
+    private volatile boolean exit = false;
     private Vector<Updater> objectsToUpdate;
+
+    public GameEngine() {
+        objectsToUpdate = new Vector<>();
+    }
+    public void endGame() {
+        exit = true;
+    }
     @Override
     public void run() {
         long lastTime = System.nanoTime();
@@ -14,7 +21,7 @@ public class GameEngine implements Runnable {
             double deltaSecs = (currentTime-lastTime)/1000000000.0;
             lastTime = currentTime;
 
-            while (isPaused);
+            while (isPaused) Thread.onSpinWait();
 
             if(exit) {
                 break;
@@ -23,5 +30,8 @@ public class GameEngine implements Runnable {
                 obj.update(deltaSecs);
             }
         }
+    }
+    public void addObject(Updater object) {
+        objectsToUpdate.add(object);
     }
 }
