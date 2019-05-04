@@ -7,8 +7,12 @@ public class PlayerSteering implements Updater {
     private final static int WALKSPEED = 125;
     private final static int RUNSPEED = 556;
 
+    public PlayerSteering(Player aModel) {
+        model = aModel;
+    }
     @Override
     public void update(double deltaTime) {
+//        System.out.println("update player");
         int direction = model.getRotation();
         boolean inMotion = false;
         if(model.isRight()&&!model.isLeft()) {
@@ -49,5 +53,10 @@ public class PlayerSteering implements Updater {
             model.setX((int) (model.getX()+Math.cos(Math.toRadians(direction))*RUNSPEED*deltaTime));
             model.setY((int) (model.getY()-Math.sin(Math.toRadians(direction))*RUNSPEED*deltaTime));
         }
+        else if(inMotion) {
+            model.setX((int) (model.getX()+Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime));
+            model.setY((int) (model.getY()-Math.sin(Math.toRadians(direction))*WALKSPEED*deltaTime));
+        }
+        model.drawMe();
     }
 }
