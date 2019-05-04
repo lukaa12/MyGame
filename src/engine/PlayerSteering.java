@@ -12,7 +12,6 @@ public class PlayerSteering implements Updater {
     }
     @Override
     public void update(double deltaTime) {
-//        System.out.println("update player");
         int direction = model.getRotation();
         boolean inMotion = false;
         if(model.isRight()&&!model.isLeft()) {
@@ -50,12 +49,13 @@ public class PlayerSteering implements Updater {
         }
         model.setRotation(direction);
         if(model.isRunning()&&inMotion) {
-            model.setX((int) (model.getX()+Math.cos(Math.toRadians(direction))*RUNSPEED*deltaTime));
-            model.setY((int) (model.getY()-Math.sin(Math.toRadians(direction))*RUNSPEED*deltaTime));
+            model.addX(Math.cos(Math.toRadians(direction))*RUNSPEED*deltaTime);
+            model.addY(-Math.sin(Math.toRadians(direction))*RUNSPEED*deltaTime);
         }
         else if(inMotion) {
-            model.setX((int) (model.getX()+Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime));
-            model.setY((int) (model.getY()-Math.sin(Math.toRadians(direction))*WALKSPEED*deltaTime));
+            System.out.println("X: "+Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime);
+            model.addX(Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime);
+            model.addY(-Math.sin(Math.toRadians(direction))*WALKSPEED*deltaTime);
         }
         model.drawMe();
     }

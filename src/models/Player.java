@@ -5,8 +5,8 @@ import engine.Updater;
 import javafx.scene.image.ImageView;
 
 public class Player implements Steerable {
-    private int x = 960;
-    private int y = 540;
+    private double x = 960.0;
+    private double y = 540.0;
     private int rotation = 180;
     private boolean  isRunning, isSquating, isJumping;
     private boolean up, down, left, right;
@@ -17,22 +17,30 @@ public class Player implements Steerable {
         steering = new PlayerSteering(this);
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
-        System.out.println("old x:"+this.x+"new x:"+x);
+    public void setX(double x) {
+//        System.out.println("old x:"+this.x+"new x:"+x);
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
-        System.out.println("old y:"+this.y+"new y:"+y);
+    public void setY(double y) {
+//        System.out.println("old y:"+this.y+"new y:"+y);
         this.y = y;
+    }
+
+    public void addX(double x) {
+        this.x += x;
+    }
+
+    public void addY(double y) {
+        this.y += y;
     }
 
     public int getRotation() {

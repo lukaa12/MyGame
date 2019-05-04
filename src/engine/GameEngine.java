@@ -18,7 +18,8 @@ public class GameEngine implements Runnable {
         long lastTime = System.nanoTime();
         while (true) {
             long currentTime = System.nanoTime();
-            double deltaSecs = (currentTime-lastTime)/1000000000.0;
+            double deltaSecs = Math.abs(currentTime-lastTime)/1000000000.0;
+//            System.out.println(deltaSecs);
             lastTime = currentTime;
 
             while (isPaused) Thread.onSpinWait();
