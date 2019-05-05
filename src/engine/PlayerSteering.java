@@ -49,14 +49,13 @@ public class PlayerSteering implements Updater {
         }
         model.setRotation(direction);
         if(model.isRunning()&&inMotion) {
-            model.addX(Math.cos(Math.toRadians(direction))*RUNSPEED*deltaTime);
-            model.addY(-Math.sin(Math.toRadians(direction))*RUNSPEED*deltaTime);
+            model.addX(Math.sin(Math.toRadians(direction))*RUNSPEED*deltaTime);
+            model.addY(-Math.cos(Math.toRadians(direction))*RUNSPEED*deltaTime);
         }
         else if(inMotion) {
-            System.out.println("X: "+Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime);
-            model.addX(Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime);
-            model.addY(-Math.sin(Math.toRadians(direction))*WALKSPEED*deltaTime);
+            model.addX(Math.sin(Math.toRadians(direction))*WALKSPEED*deltaTime);
+            model.addY(-Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime);
         }
-        model.drawMe();
+//        model.drawMe();
     }
 }

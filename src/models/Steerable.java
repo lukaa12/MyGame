@@ -11,4 +11,5 @@ public interface Steerable {
     void setSprint(boolean set);
     void setSquat(boolean set);
     Updater getSteering();
+    void drawMe();
 }

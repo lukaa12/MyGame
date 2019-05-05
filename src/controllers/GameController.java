@@ -2,6 +2,7 @@ package controllers;
 
 import engine.GameEngine;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
@@ -20,6 +21,7 @@ public class GameController {
     private ImageView playerTransform;
     private Steerable object;
     private GameEngine gameEngine;
+    private volatile boolean inRun = true;
     @FXML
     private Pane newGamePane;
     @FXML
@@ -36,13 +38,16 @@ public class GameController {
 
     void setViewController(ViewController viewController) {
         this.viewController = viewController;
-        this.gameEngine = viewController.getGameEngine();
+        gameEngine = new GameEngine();
+        Thread engineThread = new Thread(gameEngine);
+        engineThread.start();
         gameEngine.addObject(object.getSteering());
         this.viewController.getScene().setOnKeyPressed(new EventHandler<>() {
             @Override
             public void handle(KeyEvent keyEvent) {
                 switch (keyEvent.getCode()) {
                     case ESCAPE:
+                        gameEngine.endGame();
                         viewController.mainStackPane.getChildren().clear();
                         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/MenuScreen.fxml"));
                         Pane menuPane = null;
@@ -74,7 +79,7 @@ public class GameController {
                         object.setSprint(true);
                         break;
                 }
-
+                object.drawMe();
             }
         });
         this.viewController.getScene().setOnKeyReleased(keyEvent -> {
@@ -97,6 +102,7 @@ public class GameController {
                     object.setSprint(false);
                     break;
             }
+            object.drawMe();
         });
     }
 }

@@ -1,6 +1,5 @@
 package controllers;
 
-import engine.GameEngine;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,7 +10,6 @@ import java.io.IOException;
 
 public class ViewController {
     private Scene scene;
-    private GameEngine gameEngine;
     @FXML
     StackPane mainStackPane;
     @FXML
@@ -34,13 +32,5 @@ public class ViewController {
 
     public void setScene(Scene scene) {
         this.scene = scene;
-    }
-
-    GameEngine getGameEngine() {
-        return gameEngine;
-    }
-
-    public void setGameEngine(GameEngine gameEngine) {
-        this.gameEngine = gameEngine;
     }
 }

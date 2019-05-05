@@ -26,7 +26,7 @@ public class MenuController {
     public void initialize() {
         EventHandler<ActionEvent> menuHandler = actionEvent -> {
             if(actionEvent.getSource().equals(exit)) {
-                viewController.getGameEngine().endGame();
+//                viewController.getGameEngine().endGame();
 
                 Platform.exit();
             }

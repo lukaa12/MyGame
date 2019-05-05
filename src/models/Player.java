@@ -122,7 +122,7 @@ public class Player implements Steerable {
     public void setPlayerTransform(ImageView playerTransform) {
         this.playerTransform = playerTransform;
     }
-    public void drawMe() {
+    public synchronized void drawMe() {
         playerTransform.setY(y);
         playerTransform.setX(x);
         playerTransform.setRotate(rotation);
