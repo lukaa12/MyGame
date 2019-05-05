@@ -13,7 +13,8 @@ import models.Player;
 import models.Steerable;
 
 import java.io.IOException;
-
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class GameController {
@@ -37,6 +38,7 @@ public class GameController {
     }
 
     void setViewController(ViewController viewController) {
+        Timer timer = new Timer();
         this.viewController = viewController;
         gameEngine = new GameEngine();
         Thread engineThread = new Thread(gameEngine);
@@ -48,6 +50,7 @@ public class GameController {
                 switch (keyEvent.getCode()) {
                     case ESCAPE:
                         gameEngine.endGame();
+                        timer.cancel();
                         viewController.mainStackPane.getChildren().clear();
                         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/MenuScreen.fxml"));
                         Pane menuPane = null;
@@ -104,5 +107,18 @@ public class GameController {
             }
             object.drawMe();
         });
+        int timeStep =  16;
+        timer.schedule(new Renderer(object),0L,timeStep);
+    }
+}
+
+class Renderer extends TimerTask {
+    Steerable object;
+    public Renderer(Steerable st) {
+        object = st;
+    }
+    @Override
+    public void run() {
+        object.drawMe();
     }
 }
