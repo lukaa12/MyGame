@@ -28,13 +28,8 @@ public class GameController {
     @FXML
     public void initialize() {
         Player player = new Player();
-        playerTransform = new ImageView(new Image(this.getClass().getResource("/resources/player.png").toString()));
-        playerTransform.setX(player.getX());
-        playerTransform.setY(player.getY());
-        playerTransform.setRotate(player.getRotation());
-        newGamePane.getChildren().add(playerTransform);
+        newGamePane.getChildren().add(player.getPlayerTransform());
         object = player;
-        player.setPlayerTransform(playerTransform);
     }
 
     void setViewController(ViewController viewController) {
@@ -82,7 +77,6 @@ public class GameController {
                         object.setSprint(true);
                         break;
                 }
-                object.drawMe();
             }
         });
         this.viewController.getScene().setOnKeyReleased(keyEvent -> {
@@ -105,7 +99,6 @@ public class GameController {
                     object.setSprint(false);
                     break;
             }
-            object.drawMe();
         });
         int timeStep =  16;
         timer.schedule(new Renderer(object),0L,timeStep);

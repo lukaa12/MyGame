@@ -2,6 +2,7 @@ package models;
 
 import engine.PlayerSteering;
 import engine.Updater;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Player implements Steerable {
@@ -12,9 +13,23 @@ public class Player implements Steerable {
     private boolean up, down, left, right;
     private PlayerSteering steering;
     private ImageView playerTransform;
+    private Image stand, walkr, walkl;
+    public double step;
 
     public Player() {
-        steering = new PlayerSteering(this);
+        stand = new Image(this.getClass().getResource("/resources/player.png").toString());
+        walkl = new Image(this.getClass().getResource("/resources/walkl.png").toString());
+        walkr = new Image(this.getClass().getResource("/resources/walkr.png").toString());
+        playerTransform = new ImageView(stand);
+//        playerTransform.setImage(walkl);
+        playerTransform.setX(x);
+        playerTransform.setY(y);
+        playerTransform.setRotate(rotation);
+        steering = new PlayerSteering(this,playerTransform);
+    }
+
+    public ImageView getPlayerTransform() {
+        return playerTransform;
     }
 
     public double getX() {
@@ -31,7 +46,6 @@ public class Player implements Steerable {
     }
 
     public void setY(double y) {
-//        System.out.println("old y:"+this.y+"new y:"+y);
         this.y = y;
     }
 
@@ -119,12 +133,31 @@ public class Player implements Steerable {
         return up;
     }
 
-    public void setPlayerTransform(ImageView playerTransform) {
-        this.playerTransform = playerTransform;
-    }
     public synchronized void drawMe() {
+//        System.out.println(step);
+        this.setImage();
         playerTransform.setY(y);
         playerTransform.setX(x);
         playerTransform.setRotate(rotation);
+    }
+
+    @Override
+    public synchronized void setImage() {
+       // boolean right = false;
+        if(!up&&!down&&!right&&!left) {
+            playerTransform.setImage(stand);
+        }
+        if(step>60.0) {
+            System.out.println("Step");
+            step = 0;
+            if(!playerTransform.getImage().equals(walkl)) {
+                System.out.println("Lewa");
+                playerTransform.setImage(walkl);
+            }
+            else if(!playerTransform.getImage().equals(walkr)) {
+                System.out.println("Prawa");
+                playerTransform.setImage(walkr);
+            }
+        }
     }
 }

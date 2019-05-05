@@ -1,14 +1,19 @@
 package engine;
 
+import javafx.scene.image.ImageView;
 import models.Player;
+
 
 public class PlayerSteering implements Updater {
     private Player model;
     private final static int WALKSPEED = 125;
     private final static int RUNSPEED = 556;
+    private ImageView animation;
+    private int step = 0;
 
-    public PlayerSteering(Player aModel) {
+    public PlayerSteering(Player aModel, ImageView animation) {
         model = aModel;
+        this.animation = animation;
     }
     @Override
     public void update(double deltaTime) {
@@ -55,7 +60,11 @@ public class PlayerSteering implements Updater {
         else if(inMotion) {
             model.addX(Math.sin(Math.toRadians(direction))*WALKSPEED*deltaTime);
             model.addY(-Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime);
+            model.step += WALKSPEED*deltaTime;
         }
-//        model.drawMe();
+//        if(step>30) {
+//            step = 0;
+//
+//        }
     }
 }
