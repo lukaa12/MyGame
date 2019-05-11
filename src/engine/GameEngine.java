@@ -2,7 +2,6 @@ package engine;
 
 
 import javafx.scene.Node;
-import javafx.scene.shape.Rectangle;
 import models.Steerable;
 
 import java.util.Vector;

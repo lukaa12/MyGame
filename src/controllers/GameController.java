@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import models.Player;
 import models.Steerable;
 
@@ -22,7 +21,7 @@ public class GameController {
     private GameEngine gameEngine;
     private volatile boolean inRun = true;
     @FXML
-    private StackPane colliderContainer;
+    private Pane colliderContainer;
     @FXML
     private Pane newGamePane;
     @FXML
@@ -39,7 +38,6 @@ public class GameController {
         Thread engineThread = new Thread(gameEngine);
         gameEngine.addObject(object);
         for(Node i: colliderContainer.getChildren()) {
-            System.out.println(i.toString()+" kolizja");
             gameEngine.addCollisions(i);
         }
         engineThread.start();

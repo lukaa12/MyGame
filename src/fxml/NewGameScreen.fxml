@@ -13,13 +13,14 @@
             <Image url="@../resources/home.png" />
          </image>
       </ImageView>
-      <StackPane fx:id="colliderContainer" layoutX="408.0" layoutY="182.0" prefHeight="710.0" prefWidth="1061.0" visible="false">
+      <StackPane layoutX="408.0" layoutY="182.0" prefHeight="710.0" prefWidth="1061.0" visible="false" />
+      <Pane fx:id="colliderContainer" prefHeight="1080.0" prefWidth="1920.0">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="705.0" stroke="BLACK" strokeType="INSIDE" width="30.0" StackPane.alignment="CENTER_LEFT" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="1060.0" StackPane.alignment="TOP_CENTER" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="11.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="1060.0" StackPane.alignment="BOTTOM_CENTER" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="705.0" layoutX="10.0" layoutY="12.0" stroke="BLACK" strokeType="INSIDE" width="30.0" StackPane.alignment="CENTER_RIGHT" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="705.0" layoutX="410.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="410.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="1060.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="410.0" layoutY="860.0" stroke="BLACK" strokeType="INSIDE" width="1060.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="705.0" layoutX="1440.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
          </children>
-      </StackPane>
+      </Pane>
    </children>
 </Pane>

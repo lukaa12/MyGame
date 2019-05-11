@@ -16,7 +16,7 @@ public class Player implements Steerable {
     private boolean up, down, left, right;
     private ImageView playerTransform;
     private Image stand, walkr, walkl, runr, runl;
-    public double step =59.5;
+    public double step =0.0;
 
     public Player() {
         stand = new Image(this.getClass().getResource("/resources/player.png").toString());
@@ -78,55 +78,55 @@ public class Player implements Steerable {
 
     @Override
     public void update(double deltaTime, Vector<Node> collide) {
-        int direction = rotation;
         double oldX = x, oldY = y;
         boolean inMotion = false, collision = false;
         if(this.isRight()&&!this.isLeft()) {
             if(this.isUp()&&!this.isDown()) {
                 inMotion = true;
-                direction = 45;
+                rotation = 45;
             } else if(this.isDown()&&!this.isUp()) {
-                direction = 135;
+                rotation = 135;
                 inMotion = true;
             } else {
-                direction = 90;
+                rotation = 90;
                 inMotion = true;
             }
         }
         else if(!this.isRight()&&this.isLeft()) {
             if(this.isUp()&&!this.isDown()) {
-                direction = 315;
+                rotation = 315;
                 inMotion = true;
             } else if(this.isDown()&&!this.isUp()) {
-                direction = 225;
+                rotation = 225;
                 inMotion = true;
             } else {
-                direction = 270;
+                rotation = 270;
                 inMotion = true;
             }
         }
         else {
             if(this.isUp()&&!this.isDown()) {
-                direction = 0;
+                rotation = 0;
                 inMotion = true;
             } else if(this.isDown()&&!this.isUp()) {
-                direction = 180;
+                rotation = 180;
                 inMotion = true;
             }
         }
-        rotation = direction;
         if(this.isRunning()&&inMotion) {
-            x += Math.sin(Math.toRadians(direction))*RUNSPEED*deltaTime;
-            y -= Math.cos(Math.toRadians(direction))*RUNSPEED*deltaTime;
+            x += Math.sin(Math.toRadians(rotation))*RUNSPEED*deltaTime;
+            y -= Math.cos(Math.toRadians(rotation))*RUNSPEED*deltaTime;
         }
         else if(inMotion) {
-            x += Math.sin(Math.toRadians(direction))*WALKSPEED*deltaTime;
-            y -= Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime;
+            x += Math.sin(Math.toRadians(rotation))*WALKSPEED*deltaTime;
+            y -= Math.cos(Math.toRadians(rotation))*WALKSPEED*deltaTime;
         }
         this.step +=deltaTime;
         for(Node i: collide) {
-            if(i.getBoundsInParent().intersects(playerTransform.getBoundsInParent()))
+            if(i.getBoundsInParent().intersects(playerTransform.getBoundsInParent())) {
                 collision = true;
+                System.out.println("collision");
+            }
         }
         if(collision) {
             x= oldX;
