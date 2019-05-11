@@ -13,4 +13,6 @@ public interface Steerable {
     Updater getSteering();
     void drawMe();
     void setImage();
+//    void update(double deltaTime);
+
 }

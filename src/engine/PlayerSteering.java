@@ -9,7 +9,6 @@ public class PlayerSteering implements Updater {
     private final static int WALKSPEED = 125;
     private final static int RUNSPEED = 556;
     private ImageView animation;
-    private int step = 0;
 
     public PlayerSteering(Player aModel, ImageView animation) {
         model = aModel;
@@ -62,9 +61,5 @@ public class PlayerSteering implements Updater {
             model.addY(-Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime);
             model.step += WALKSPEED*deltaTime;
         }
-//        if(step>30) {
-//            step = 0;
-//
-//        }
     }
 }

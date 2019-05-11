@@ -1,6 +1,5 @@
 package engine;
 
-import javafx.collections.ObservableList;
 
 import java.util.Vector;
 
@@ -19,9 +18,9 @@ public class GameEngine implements Runnable {
     public void run() {
         long lastTime = System.nanoTime();
         while (true) {
+//            Timeline
             long currentTime = System.nanoTime();
             double deltaSecs = Math.abs(currentTime-lastTime)/1000000000.0;
-//            System.out.println(deltaSecs);
             lastTime = currentTime;
 
             while (isPaused) Thread.onSpinWait();
