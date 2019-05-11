@@ -15,6 +15,7 @@ public class GameEngine implements Runnable {
 
     public GameEngine() {
         objectsToUpdate = new Vector<>();
+        collisions = new Vector<>();
     }
     public void endGame() {
         exit = true;

@@ -37,12 +37,12 @@ public class GameController {
         this.viewController = viewController;
         gameEngine = new GameEngine();
         Thread engineThread = new Thread(gameEngine);
-        engineThread.start();
         gameEngine.addObject(object);
         for(Node i: colliderContainer.getChildren()) {
             System.out.println(i.toString()+" kolizja");
             gameEngine.addCollisions(i);
         }
+        engineThread.start();
         this.viewController.getScene().setOnKeyPressed(new EventHandler<>() {
             @Override
             public void handle(KeyEvent keyEvent) {
