@@ -1,5 +1,9 @@
 package models;
 
+import javafx.scene.Node;
+
+import java.util.Vector;
+
 public interface Steerable {
     void setUp(boolean set);
     void setDown(boolean set);
@@ -10,6 +14,6 @@ public interface Steerable {
     void setSquat(boolean set);
     void drawMe();
     void setImage();
-    void update(double deltaTime);
+    void update(double deltaTime, Vector<Node> collide);
 
 }

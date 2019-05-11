@@ -1,6 +1,8 @@
 package engine;
 
 
+import javafx.scene.Node;
+import javafx.scene.shape.Rectangle;
 import models.Steerable;
 
 import java.util.Vector;
@@ -9,6 +11,7 @@ public class GameEngine implements Runnable {
     private volatile boolean isPaused = false;
     private volatile boolean exit = false;
     private Vector<Steerable> objectsToUpdate;
+    private Vector<Node> collisions;
 
     public GameEngine() {
         objectsToUpdate = new Vector<>();
@@ -31,11 +34,12 @@ public class GameEngine implements Runnable {
                 break;
             }
             for(Steerable obj: objectsToUpdate) {
-                obj.update(deltaSecs);
+                obj.update(deltaSecs,collisions);
             }
         }
     }
     public void addObject(Steerable object) {
         objectsToUpdate.add(object);
     }
+    public void addCollisions(Node obj) {collisions.add(obj);}
 }

@@ -1,7 +1,10 @@
 package models;
 
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.util.Vector;
 
 public class Player implements Steerable {
     private final static int WALKSPEED = 125;
@@ -74,9 +77,10 @@ public class Player implements Steerable {
     }
 
     @Override
-    public void update(double deltaTime) {
-        int direction = this.getRotation();
-        boolean inMotion = false;
+    public void update(double deltaTime, Vector<Node> collide) {
+        int direction = rotation;
+        double oldX = x, oldY = y;
+        boolean inMotion = false, collision = false;
         if(this.isRight()&&!this.isLeft()) {
             if(this.isUp()&&!this.isDown()) {
                 inMotion = true;
@@ -110,16 +114,24 @@ public class Player implements Steerable {
                 inMotion = true;
             }
         }
-        this.setRotation(direction);
+        rotation = direction;
         if(this.isRunning()&&inMotion) {
-            this.addX(Math.sin(Math.toRadians(direction))*RUNSPEED*deltaTime);
-            this.addY(-Math.cos(Math.toRadians(direction))*RUNSPEED*deltaTime);
+            x += Math.sin(Math.toRadians(direction))*RUNSPEED*deltaTime;
+            y -= Math.cos(Math.toRadians(direction))*RUNSPEED*deltaTime;
         }
         else if(inMotion) {
-            this.addX(Math.sin(Math.toRadians(direction))*WALKSPEED*deltaTime);
-            this.addY(-Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime);
+            x += Math.sin(Math.toRadians(direction))*WALKSPEED*deltaTime;
+            y -= Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime;
         }
         this.step +=deltaTime;
+        for(Node i: collide) {
+            if(i.getBoundsInParent().intersects(playerTransform.getBoundsInParent()))
+                collision = true;
+        }
+        if(collision) {
+            x= oldX;
+            y= oldY;
+        }
     }
 
     public ImageView getPlayerTransform() {
@@ -130,30 +142,12 @@ public class Player implements Steerable {
         return x;
     }
 
-    public void setX(double x) { this.x = x; }
-
     public double getY() {
         return y;
     }
 
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public void addX(double x) {
-        this.x += x;
-    }
-
-    public void addY(double y) {
-        this.y += y;
-    }
-
     public int getRotation() {
         return rotation;
-    }
-
-    public void setRotation(int rotation) {
-        this.rotation = rotation;
     }
 
     @Override

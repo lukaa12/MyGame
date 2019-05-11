@@ -4,9 +4,10 @@ import engine.GameEngine;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import models.Player;
 import models.Steerable;
 
@@ -17,10 +18,11 @@ import java.util.TimerTask;
 
 public class GameController {
     private ViewController viewController;
-    private ImageView playerTransform;
     private Steerable object;
     private GameEngine gameEngine;
     private volatile boolean inRun = true;
+    @FXML
+    private StackPane colliderContainer;
     @FXML
     private Pane newGamePane;
     @FXML
@@ -37,6 +39,10 @@ public class GameController {
         Thread engineThread = new Thread(gameEngine);
         engineThread.start();
         gameEngine.addObject(object);
+        for(Node i: colliderContainer.getChildren()) {
+            System.out.println(i.toString()+" kolizja");
+            gameEngine.addCollisions(i);
+        }
         this.viewController.getScene().setOnKeyPressed(new EventHandler<>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -104,8 +110,8 @@ public class GameController {
 }
 
 class Renderer extends TimerTask {
-    Steerable object;
-    public Renderer(Steerable st) {
+    private Steerable object;
+    Renderer(Steerable st) {
         object = st;
     }
     @Override
