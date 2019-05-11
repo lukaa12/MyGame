@@ -1,7 +1,5 @@
 package models;
 
-import engine.Updater;
-
 public interface Steerable {
     void setUp(boolean set);
     void setDown(boolean set);
@@ -10,9 +8,8 @@ public interface Steerable {
     void setJump(boolean set);
     void setSprint(boolean set);
     void setSquat(boolean set);
-    Updater getSteering();
     void drawMe();
     void setImage();
-//    void update(double deltaTime);
+    void update(double deltaTime);
 
 }

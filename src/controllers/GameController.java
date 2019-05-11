@@ -2,10 +2,8 @@ package controllers;
 
 import engine.GameEngine;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -38,7 +36,7 @@ public class GameController {
         gameEngine = new GameEngine();
         Thread engineThread = new Thread(gameEngine);
         engineThread.start();
-        gameEngine.addObject(object.getSteering());
+        gameEngine.addObject(object);
         this.viewController.getScene().setOnKeyPressed(new EventHandler<>() {
             @Override
             public void handle(KeyEvent keyEvent) {

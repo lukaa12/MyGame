@@ -1,12 +1,14 @@
 package engine;
 
 
+import models.Steerable;
+
 import java.util.Vector;
 
 public class GameEngine implements Runnable {
     private volatile boolean isPaused = false;
     private volatile boolean exit = false;
-    private Vector<Updater> objectsToUpdate;
+    private Vector<Steerable> objectsToUpdate;
 
     public GameEngine() {
         objectsToUpdate = new Vector<>();
@@ -28,12 +30,12 @@ public class GameEngine implements Runnable {
             if(exit) {
                 break;
             }
-            for(Updater obj: objectsToUpdate) {
+            for(Steerable obj: objectsToUpdate) {
                 obj.update(deltaSecs);
             }
         }
     }
-    public void addObject(Updater object) {
+    public void addObject(Steerable object) {
         objectsToUpdate.add(object);
     }
 }

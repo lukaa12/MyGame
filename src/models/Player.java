@@ -1,17 +1,16 @@
 package models;
 
-import engine.PlayerSteering;
-import engine.Updater;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Player implements Steerable {
+    private final static int WALKSPEED = 125;
+    private final static int RUNSPEED = 456;
     private double x = 960.0;
     private double y = 540.0;
     private int rotation = 180;
     private boolean  isRunning, isSquating, isJumping;
     private boolean up, down, left, right;
-    private PlayerSteering steering;
     private ImageView playerTransform;
     private Image stand, walkr, walkl, runr, runl;
     public double step =59.5;
@@ -26,7 +25,101 @@ public class Player implements Steerable {
         playerTransform.setX(x);
         playerTransform.setY(y);
         playerTransform.setRotate(rotation);
-        steering = new PlayerSteering(this,playerTransform);
+    }
+
+    public synchronized void drawMe() {
+        this.setImage();
+        playerTransform.setY(y);
+        playerTransform.setX(x);
+        playerTransform.setRotate(rotation);
+    }
+
+
+
+    @Override
+    public synchronized void setImage() {
+        if(!up&&!down&&!right&&!left) {
+            playerTransform.setImage(stand);
+        }
+        else if(step>0.4&&!isRunning) {
+            step = 0;
+            if(!playerTransform.getImage().equals(walkr)&&!playerTransform.getImage().equals(walkl)) {
+                playerTransform.setImage(walkr);
+            }
+            else if(playerTransform.getImage().equals(walkl)) {
+                playerTransform.setImage(walkr);
+            }
+            else if(playerTransform.getImage().equals(walkr)) {
+                playerTransform.setImage(walkl);
+            }
+        }
+        else if(step>0.24&&isRunning) {
+            step = 0;
+            if(playerTransform.getImage().equals(stand)) {
+                playerTransform.setImage(runr);
+            }
+            else if(playerTransform.getImage().equals(runr)) {
+                playerTransform.setImage(walkl);
+            }
+            else if(playerTransform.getImage().equals(walkl)) {
+                playerTransform.setImage(runl);
+            }
+            else if(playerTransform.getImage().equals(runl)) {
+                playerTransform.setImage(walkr);
+            }
+            else if(playerTransform.getImage().equals(walkr)) {
+                playerTransform.setImage(runr);
+            }
+        }
+    }
+
+    @Override
+    public void update(double deltaTime) {
+        int direction = this.getRotation();
+        boolean inMotion = false;
+        if(this.isRight()&&!this.isLeft()) {
+            if(this.isUp()&&!this.isDown()) {
+                inMotion = true;
+                direction = 45;
+            } else if(this.isDown()&&!this.isUp()) {
+                direction = 135;
+                inMotion = true;
+            } else {
+                direction = 90;
+                inMotion = true;
+            }
+        }
+        else if(!this.isRight()&&this.isLeft()) {
+            if(this.isUp()&&!this.isDown()) {
+                direction = 315;
+                inMotion = true;
+            } else if(this.isDown()&&!this.isUp()) {
+                direction = 225;
+                inMotion = true;
+            } else {
+                direction = 270;
+                inMotion = true;
+            }
+        }
+        else {
+            if(this.isUp()&&!this.isDown()) {
+                direction = 0;
+                inMotion = true;
+            } else if(this.isDown()&&!this.isUp()) {
+                direction = 180;
+                inMotion = true;
+            }
+        }
+        this.setRotation(direction);
+        if(this.isRunning()&&inMotion) {
+            this.addX(Math.sin(Math.toRadians(direction))*RUNSPEED*deltaTime);
+            this.addY(-Math.cos(Math.toRadians(direction))*RUNSPEED*deltaTime);
+        }
+        else if(inMotion) {
+            this.addX(Math.sin(Math.toRadians(direction))*WALKSPEED*deltaTime);
+            this.addY(-Math.cos(Math.toRadians(direction))*WALKSPEED*deltaTime);
+        }
+        this.step +=deltaTime;
     }
 
     public ImageView getPlayerTransform() {
@@ -98,11 +191,6 @@ public class Player implements Steerable {
         isSquating= set;
     }
 
-    @Override
-    public Updater getSteering() {
-        return this.steering;
-    }
-
     public boolean isRunning() {
         return isRunning;
     }
@@ -131,27 +219,4 @@ public class Player implements Steerable {
         return up;
     }
 
-    public synchronized void drawMe() {
-        this.setImage();
-        playerTransform.setY(y);
-        playerTransform.setX(x);
-        playerTransform.setRotate(rotation);
-    }
-
-    @Override
-    public synchronized void setImage() {
-        if(!up&&!down&&!right&&!left) {
-            playerTransform.setImage(stand);
-            step =59.5;
-        }
-        else if(step>60.0) {
-            step = 0;
-            if(!playerTransform.getImage().equals(walkl)) {
-                playerTransform.setImage(walkl);
-            }
-            else if(!playerTransform.getImage().equals(walkr)) {
-                playerTransform.setImage(walkr);
-            }
-        }
-    }
 }
