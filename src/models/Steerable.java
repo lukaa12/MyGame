@@ -15,5 +15,7 @@ public interface Steerable {
     void drawMe();
     void setImage();
     void update(double deltaTime, Vector<Node> collide);
-
+    double getX();
+    double getY();
+    void setColision(boolean colision);
 }

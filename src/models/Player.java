@@ -3,6 +3,7 @@ package models;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 
 import java.util.Vector;
 
@@ -12,14 +13,16 @@ public class Player implements Steerable {
     private double x = 960.0;
     private double y = 540.0;
     private int rotation = 180;
-    private boolean  isRunning, isSquating, isJumping;
+    private boolean  isRunning, isSquating, isJumping, colision;
     private boolean up, down, left, right;
     private ImageView playerTransform;
-    private Image stand, walkr, walkl, runr, runl;
+    private Image stand, walkr, walkl, runr, runl, cl;
     public double step =0.0;
+    private Rectangle bounds;
 
     public Player() {
         stand = new Image(this.getClass().getResource("/resources/player.png").toString());
+        cl = new Image(this.getClass().getResource("/resources/playerCl.png").toString());
         walkl = new Image(this.getClass().getResource("/resources/walkl.png").toString());
         walkr = new Image(this.getClass().getResource("/resources/walkr.png").toString());
         runl = new Image(this.getClass().getResource("/resources/runl.png").toString());
@@ -28,6 +31,7 @@ public class Player implements Steerable {
         playerTransform.setX(x);
         playerTransform.setY(y);
         playerTransform.setRotate(rotation);
+        bounds = new Rectangle();
     }
 
     public synchronized void drawMe() {
@@ -35,6 +39,11 @@ public class Player implements Steerable {
         playerTransform.setY(y);
         playerTransform.setX(x);
         playerTransform.setRotate(rotation);
+        bounds.setX(x);
+        bounds.setY(y);
+        bounds.setHeight(playerTransform.getFitHeight());
+        bounds.setWidth(playerTransform.getFitWidth());
+        bounds.setRotate(rotation);
     }
 
 
@@ -58,7 +67,7 @@ public class Player implements Steerable {
         }
         else if(step>0.24&&isRunning) {
             step = 0;
-            if(playerTransform.getImage().equals(stand)) {
+            if(playerTransform.getImage().equals(stand)||playerTransform.getImage().equals(cl)) {
                 playerTransform.setImage(runr);
             }
             else if(playerTransform.getImage().equals(runr)) {
@@ -79,12 +88,12 @@ public class Player implements Steerable {
     @Override
     public void update(double deltaTime, Vector<Node> collide) {
         double oldX = x, oldY = y;
-        boolean inMotion = false, collision = false;
-        if(this.isRight()&&!this.isLeft()) {
-            if(this.isUp()&&!this.isDown()) {
+        boolean inMotion = false;
+        if(right&&!left) {
+            if(up&&!down) {
                 inMotion = true;
                 rotation = 45;
-            } else if(this.isDown()&&!this.isUp()) {
+            } else if(down&&!up) {
                 rotation = 135;
                 inMotion = true;
             } else {
@@ -92,11 +101,11 @@ public class Player implements Steerable {
                 inMotion = true;
             }
         }
-        else if(!this.isRight()&&this.isLeft()) {
-            if(this.isUp()&&!this.isDown()) {
+        else if(!right&&left) {
+            if(up&&!down) {
                 rotation = 315;
                 inMotion = true;
-            } else if(this.isDown()&&!this.isUp()) {
+            } else if(down&&!up) {
                 rotation = 225;
                 inMotion = true;
             } else {
@@ -105,15 +114,15 @@ public class Player implements Steerable {
             }
         }
         else {
-            if(this.isUp()&&!this.isDown()) {
+            if(up&&!down) {
                 rotation = 0;
                 inMotion = true;
-            } else if(this.isDown()&&!this.isUp()) {
+            } else if(down&&!up) {
                 rotation = 180;
                 inMotion = true;
             }
         }
-        if(this.isRunning()&&inMotion) {
+        if(this.isRunning&&inMotion) {
             x += Math.sin(Math.toRadians(rotation))*RUNSPEED*deltaTime;
             y -= Math.cos(Math.toRadians(rotation))*RUNSPEED*deltaTime;
         }
@@ -123,15 +132,19 @@ public class Player implements Steerable {
         }
         this.step +=deltaTime;
         for(Node i: collide) {
-            if(i.getBoundsInParent().intersects(playerTransform.getBoundsInParent())) {
-                collision = true;
-                System.out.println("collision");
+            if(i.getBoundsInParent().intersects(bounds.getBoundsInParent())) {
+                colision = true;
+//                System.out.println("collision");
             }
         }
-        if(collision) {
+        if(colision) {
             x= oldX;
             y= oldY;
+            playerTransform.setImage(cl);
         }
+//        else
+//            playerTransform.setImage(stand);
+
     }
 
     public ImageView getPlayerTransform() {
@@ -185,32 +198,35 @@ public class Player implements Steerable {
         isSquating= set;
     }
 
-    public boolean isRunning() {
-        return isRunning;
-    }
+//    public boolean isRunning() {
+//        return isRunning;
+//    }
+//
+//    public boolean isSquating() {
+//        return isSquating;
+//    }
+//
+//    public boolean isJumping() {
+//        return isJumping;
+//    }
+//
+//    public boolean isRight() {
+//        return right;
+//    }
+//
+//    public boolean isLeft() {
+//        return left;
+//    }
+//
+//    public boolean isDown() {
+//        return down;
+//    }
+//
+//    public boolean isUp() {
+//        return up;
+//    }
 
-    public boolean isSquating() {
-        return isSquating;
+    public void setColision(boolean colision) {
+        this.colision = colision;
     }
-
-    public boolean isJumping() {
-        return isJumping;
-    }
-
-    public boolean isRight() {
-        return right;
-    }
-
-    public boolean isLeft() {
-        return left;
-    }
-
-    public boolean isDown() {
-        return down;
-    }
-
-    public boolean isUp() {
-        return up;
-    }
-
 }

@@ -34,6 +34,12 @@ public class GameEngine implements Runnable {
                 break;
             }
             for(Steerable obj: objectsToUpdate) {
+//                for(Node n: collisions) {
+//                    if(n.contains(obj.getX(),obj.getY()))
+//                        obj.setColision(true);
+//                    else
+//                        obj.setColision(false);
+//                }
                 obj.update(deltaSecs,collisions);
             }
         }
