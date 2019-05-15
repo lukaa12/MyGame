@@ -6,9 +6,7 @@ import models.Steerable;
 
 import java.util.Vector;
 
-public class GameEngine implements Runnable {
-    private volatile boolean isPaused = false;
-    private volatile boolean exit = false;
+public class GameEngine {
     private Vector<Steerable> objectsToUpdate;
     private Vector<Node> collisions;
 
@@ -16,33 +14,12 @@ public class GameEngine implements Runnable {
         objectsToUpdate = new Vector<>();
         collisions = new Vector<>();
     }
-    public void endGame() {
-        exit = true;
-    }
-    @Override
+
     public void run() {
-        long lastTime = System.nanoTime();
-        while (true) {
-//            Timeline
-            long currentTime = System.nanoTime();
-            double deltaSecs = Math.abs(currentTime-lastTime)/1000000000.0;
-            lastTime = currentTime;
-
-            while (isPaused) Thread.onSpinWait();
-
-            if(exit) {
-                break;
-            }
+            double deltaSecs = 0.016;
             for(Steerable obj: objectsToUpdate) {
-//                for(Node n: collisions) {
-//                    if(n.contains(obj.getX(),obj.getY()))
-//                        obj.setColision(true);
-//                    else
-//                        obj.setColision(false);
-//                }
                 obj.update(deltaSecs,collisions);
             }
-        }
     }
     public void addObject(Steerable object) {
         objectsToUpdate.add(object);

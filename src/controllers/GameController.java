@@ -1,12 +1,16 @@
 package controllers;
 
 import engine.GameEngine;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import models.Player;
 import models.Steerable;
 
@@ -35,18 +39,21 @@ public class GameController {
         Timer timer = new Timer();
         this.viewController = viewController;
         gameEngine = new GameEngine();
-        Thread engineThread = new Thread(gameEngine);
         gameEngine.addObject(object);
         for(Node i: colliderContainer.getChildren()) {
             gameEngine.addCollisions(i);
         }
-        engineThread.start();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(16), e ->{
+            gameEngine.run();
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
         this.viewController.getScene().setOnKeyPressed(new EventHandler<>() {
             @Override
             public void handle(KeyEvent keyEvent) {
                 switch (keyEvent.getCode()) {
                     case ESCAPE:
-                        gameEngine.endGame();
+                        timeline.stop();
                         timer.cancel();
                         viewController.mainStackPane.getChildren().clear();
                         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/MenuScreen.fxml"));

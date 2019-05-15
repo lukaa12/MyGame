@@ -13,11 +13,11 @@ public class Player implements Steerable {
     private double x = 960.0;
     private double y = 540.0;
     private int rotation = 180;
-    private boolean  isRunning, isSquating, isJumping, colision;
+    private boolean  isRunning, isSquating, isJumping;
     private boolean up, down, left, right;
     private ImageView playerTransform;
     private Image stand, walkr, walkl, runr, runl, cl;
-    public double step =0.0;
+    private double step =0.0;
     private Rectangle bounds;
 
     public Player() {
@@ -39,11 +39,6 @@ public class Player implements Steerable {
         playerTransform.setY(y);
         playerTransform.setX(x);
         playerTransform.setRotate(rotation);
-        bounds.setX(x);
-        bounds.setY(y);
-        bounds.setHeight(playerTransform.getFitHeight());
-        bounds.setWidth(playerTransform.getFitWidth());
-        bounds.setRotate(rotation);
     }
 
 
@@ -88,7 +83,7 @@ public class Player implements Steerable {
     @Override
     public void update(double deltaTime, Vector<Node> collide) {
         double oldX = x, oldY = y;
-        boolean inMotion = false;
+        boolean inMotion = false, colision = false;
         if(right&&!left) {
             if(up&&!down) {
                 inMotion = true;
@@ -131,20 +126,21 @@ public class Player implements Steerable {
             y -= Math.cos(Math.toRadians(rotation))*WALKSPEED*deltaTime;
         }
         this.step +=deltaTime;
+        bounds.setX(x);
+        bounds.setY(y);
+        bounds.setHeight(playerTransform.getFitHeight());
+        bounds.setWidth(playerTransform.getFitWidth());
+        bounds.setRotate(rotation);
         for(Node i: collide) {
             if(i.getBoundsInParent().intersects(bounds.getBoundsInParent())) {
                 colision = true;
-//                System.out.println("collision");
             }
         }
         if(colision) {
             x= oldX;
             y= oldY;
-            playerTransform.setImage(cl);
-        }
-//        else
-//            playerTransform.setImage(stand);
 
+        }
     }
 
     public ImageView getPlayerTransform() {
@@ -196,37 +192,5 @@ public class Player implements Steerable {
     @Override
     public void setSquat(boolean set) {
         isSquating= set;
-    }
-
-//    public boolean isRunning() {
-//        return isRunning;
-//    }
-//
-//    public boolean isSquating() {
-//        return isSquating;
-//    }
-//
-//    public boolean isJumping() {
-//        return isJumping;
-//    }
-//
-//    public boolean isRight() {
-//        return right;
-//    }
-//
-//    public boolean isLeft() {
-//        return left;
-//    }
-//
-//    public boolean isDown() {
-//        return down;
-//    }
-//
-//    public boolean isUp() {
-//        return up;
-//    }
-
-    public void setColision(boolean colision) {
-        this.colision = colision;
     }
 }
