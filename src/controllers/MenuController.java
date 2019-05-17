@@ -7,7 +7,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import org.w3c.dom.Document;
+import view.Main;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 
 public class MenuController {
@@ -24,10 +30,18 @@ public class MenuController {
     private Button settings;
     @FXML
     public void initialize() {
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = dbFactory.newDocumentBuilder();
+            Document doc = documentBuilder.parse(this.getClass().getResourceAsStream("/resources/settings.xml"));
+            doc.getDocumentElement().normalize();
+            Main.logger.info(doc.getDocumentElement().getNodeName()+" read.");
+//            Main.logger.info("MenuController started");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         EventHandler<ActionEvent> menuHandler = actionEvent -> {
             if(actionEvent.getSource().equals(exit)) {
-//                viewController.getGameEngine().endGame();
-
                 Platform.exit();
             }
             if(actionEvent.getSource().equals(settings)) {
