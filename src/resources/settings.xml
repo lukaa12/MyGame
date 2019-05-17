@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <settings>
-    <menuMusic>
-        <turned>true</turned>
-        <volume>100</volume>
-    </menuMusic>
+    <menuMusic enabled = "true" volume = "100"></menuMusic>
 </settings>

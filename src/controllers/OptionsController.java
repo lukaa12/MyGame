@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import java.io.IOException;
 
@@ -19,10 +21,14 @@ public class OptionsController {
     @FXML
     private Button back;
 
+//    Media sound = new Media(this.getClass().getResource("/resources/menuSong.mp3").toString());
+//    MediaPlayer mediaPlayer = new MediaPlayer(sound);
+
     @FXML
     public void initialize() {
         EventHandler<ActionEvent> optionsHandler = actionEvent -> {
             if(actionEvent.getSource().equals(back)) {
+
                 viewController.mainStackPane.getChildren().clear();
                 FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/MenuScreen.fxml"));
                 Pane menuPane = null;
