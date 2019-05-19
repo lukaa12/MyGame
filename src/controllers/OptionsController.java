@@ -1,5 +1,7 @@
 package controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -7,11 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import view.Main;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -27,12 +26,9 @@ public class OptionsController {
     @FXML
     private Button back;
 
-//    Media sound = new Media(this.getClass().getResource("/resources/menuSong.mp3").toString());
-//    MediaPlayer mediaPlayer = new MediaPlayer(sound);
-
     @FXML
     public void initialize() {
-        DocumentBuilder documentBuilder = null;
+        DocumentBuilder documentBuilder;
         Document doc = null;
         Node soundMenu = null;
         try {
@@ -42,15 +38,14 @@ public class OptionsController {
             doc.getDocumentElement().normalize();
             Main.logger.info(doc.getDocumentElement().getNodeName()+" read by options controller.");
             soundMenu = doc.getElementsByTagName("menuMusic").item(0);
-            Main.logger.info(soundMenu.getNodeName()+" : +soundMenu.getAttributes().item(0).getNodeName()");
-            if(soundMenu.getAttributes().getNamedItem("enabled").equals("true")) {
+            Main.logger.info(soundMenu.getAttributes().getNamedItem("enabled").toString());
+            if(soundMenu.getAttributes().getNamedItem("enabled").toString().equals("enabled=\"true\"")) {
                 menuMusic.setSelected(true);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Node finalSoundMenu = soundMenu;
-        finalSoundMenu.getAttributes().getNamedItem("enabled").setTextContent("false");
+//        finalSoundMenu.getAttributes().getNamedItem("enabled").setTextContent("false");
         EventHandler<ActionEvent> optionsHandler = actionEvent -> {
             if(actionEvent.getSource().equals(back)) {
 
@@ -66,16 +61,32 @@ public class OptionsController {
                 menuController.setViewController(viewController);
                 viewController.mainStackPane.getChildren().add(menuPane);
             }
-            if(actionEvent.getSource().equals(menuMusic)) {
+        };
+        back.addEventHandler(ActionEvent.ACTION,optionsHandler);
+        Node finalSoundMenu = soundMenu;
+        Document finalDoc = doc;
+        ChangeListener<Boolean> checkHandler = new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+//                try {
+//                    TransformerFactory transFact = TransformerFactory.newInstance();
+//                    Transformer transformer = transFact.newTransformer();
+//                    DOMSource source = new DOMSource(finalDoc);
+//                    StreamResult streamResult = new StreamResult(new File("/resources/settings.xml"));
+//                    transformer.transform(source,streamResult);
+//                } catch (TransformerException e) {
+//                    e.printStackTrace();
+//                }
                 if(menuMusic.isSelected()) {
                     finalSoundMenu.getAttributes().getNamedItem("enabled").setTextContent("true");
                 }
                 else {
                     finalSoundMenu.getAttributes().getNamedItem("enabled").setTextContent("false");
                 }
+
             }
         };
-        back.addEventHandler(ActionEvent.ACTION,optionsHandler);
+        menuMusic.selectedProperty().addListener(checkHandler);
     }
 
     public void setViewController(ViewController viewController) {

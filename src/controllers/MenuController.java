@@ -1,7 +1,5 @@
 package controllers;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -20,7 +17,9 @@ import view.Main;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 
@@ -57,6 +56,23 @@ public class MenuController {
         if(musicSetting.item(0).getNodeType() == Node.ELEMENT_NODE) {
             Element musicOptions = (Element) musicSetting.item(0);
             Main.logger.info("Music ON?" + musicOptions.getAttribute("enabled"));
+            musicOptions.getAttributes().getNamedItem("enabled").setTextContent("false");
+
+            Transformer transformer = null;
+            try {
+                transformer = TransformerFactory.newInstance().newTransformer();
+            } catch (TransformerConfigurationException e) {
+                e.printStackTrace();
+            }
+            Result output = new StreamResult(new File("/resources/settings.xml"));
+            Source input = new DOMSource(doc);
+
+            try {
+                transformer.transform(input, output);
+            } catch (TransformerException e) {
+                e.printStackTrace();
+            }
+
             if(musicOptions.getAttribute("enabled").equals("true")) {
 //                Timeline playMusic = new Timeline(new KeyFrame(Duration.seconds(108),e ->{
                     mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
