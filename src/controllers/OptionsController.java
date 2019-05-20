@@ -1,7 +1,6 @@
 package controllers;
 
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -10,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaPlayer;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.w3c.dom.Document;
@@ -43,7 +43,6 @@ public class OptionsController {
         Node soundMenu = null;
         Element musicOptions = null;
         int volumeLevel = 100;
-
         volume.setMax(1.0);
         volume.setMin(0.0);
         volume.setShowTickMarks(true);

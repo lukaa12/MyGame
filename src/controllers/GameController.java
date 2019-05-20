@@ -4,10 +4,13 @@ import engine.GameEngine;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -24,6 +27,9 @@ public class GameController {
     private Steerable object;
     private GameEngine gameEngine;
     private volatile boolean inRun = true;
+//    private ImageView map = new ImageView(new Image(this.getClass().getResource("/resources/home.png").toString()));
+//    @FXML
+//    ImageView map;
     @FXML
     private Pane colliderContainer;
     @FXML
@@ -36,6 +42,12 @@ public class GameController {
     }
 
     void setViewController(ViewController viewController) {
+//        ObservableList<Node> tmp = newGamePane.getChildren();
+//        newGamePane.getChildren().clear();
+//        newGamePane.getChildren().add(map);
+//        newGamePane.getChildren().add(0,);
+//        map.fitWidthProperty().bind(newGamePane.widthProperty());
+//        map.fitHeightProperty().bind(newGamePane.widthProperty());
         Timer timer = new Timer();
         this.viewController = viewController;
         gameEngine = new GameEngine();

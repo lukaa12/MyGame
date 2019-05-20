@@ -15,14 +15,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import view.Main;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.File;
 import java.io.IOException;
 
 public class MenuController {
@@ -39,11 +34,15 @@ public class MenuController {
     @FXML
     private Button settings;
     static Document doc = null;
-    public Media sound = new Media(this.getClass().getResource("/resources/menuSong.mp3").toString());
-    public MediaPlayer mediaPlayer = new MediaPlayer(sound);
+    Media sound = null;
+    MediaPlayer mediaPlayer = null;
 
     @FXML
     public void initialize() {
+        if(mediaPlayer == null || sound == null) {
+            sound = new Media(this.getClass().getResource("/resources/menuSong.mp3").toString());
+            mediaPlayer = new MediaPlayer(sound);
+        }
         DOMConfigurator.configure("log4j2.xml");
         DocumentBuilder documentBuilder = null;
         try {
@@ -61,16 +60,6 @@ public class MenuController {
         if(musicSetting.item(0).getNodeType() == Node.ELEMENT_NODE) {
             Element musicOptions = (Element) musicSetting.item(0);
             logger.info("Music ON? " + musicOptions.getAttribute("enabled"));
-//            musicOptions.getAttributes().getNamedItem("enabled").setTextContent("false");
-//            Transformer transformer = null;
-//            try {
-//                transformer = TransformerFactory.newInstance().newTransformer();
-//                Result output = new StreamResult(new File("C:/Users/Public/ProjektyJava/MyGame/src/resources/settings.xml"));
-//                Source input = new DOMSource(doc);
-//                transformer.transform(input, output);
-//            } catch (TransformerException e) {
-//                e.printStackTrace();
-//            }
             double volume = Integer.parseInt(musicOptions.getAttribute("volume"))/100.0;
             if(musicOptions.getAttribute("enabled").equals("true")) {
                     mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
