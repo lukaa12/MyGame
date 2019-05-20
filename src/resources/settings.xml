@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<settings>
-    <menuMusic enabled = "true" volume = "100"></menuMusic>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><settings>
+    <menuMusic enabled="true" volume="54"/>
 </settings>

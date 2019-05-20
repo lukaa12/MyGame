@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
@@ -15,7 +16,8 @@
             <Image url="@../resources/nosacz.jpg" />
          </image>
       </ImageView>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffff99" height="60.0" layoutX="790.0" layoutY="500.0" stroke="BLACK" strokeType="INSIDE" width="320.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffff99" height="60.0" layoutX="625.0" layoutY="500.0" stroke="BLACK" strokeType="INSIDE" width="320.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffff99" height="60.0" layoutX="966.0" layoutY="500.0" stroke="BLACK" strokeType="INSIDE" width="320.0" />
       <Button fx:id="saveSettings" layoutX="720.0" layoutY="800.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="SAVE">
          <font>
             <Font name="System Bold" size="35.0" />
@@ -26,10 +28,11 @@
             <Font name="System Bold" size="35.0" />
          </font>
       </Button>
-      <CheckBox fx:id="menuMusic" alignment="CENTER" layoutX="800.0" layoutY="500.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="320.0" text="Menu music">
+      <CheckBox fx:id="menuMusic" alignment="CENTER" layoutX="635.0" layoutY="500.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="320.0" text="Menu music">
          <font>
             <Font name="System Bold" size="35.0" />
          </font>
       </CheckBox>
+      <Slider fx:id="volume" layoutX="977.0" layoutY="503.0" prefHeight="54.0" prefWidth="297.0" />
    </children>
 </Pane>
