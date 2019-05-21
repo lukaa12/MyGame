@@ -5,16 +5,21 @@ import javafx.scene.Node;
 import models.Player;
 import models.Steerable;
 import models.Usable;
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 
 import java.util.Vector;
 
 public class GameEngine {
+    private Logger logger = Logger.getLogger(GameEngine.class);
     private Vector<Steerable> objectsToUpdate;
     private Vector<Node> collisions;
     private Vector<Usable> usables;
     public Usable toUse;
+    public boolean nowUse = false;
 
     public GameEngine() {
+        DOMConfigurator.configure("log4j2.xml");
         objectsToUpdate = new Vector<>();
         collisions = new Vector<>();
         usables = new Vector<>();
@@ -37,6 +42,16 @@ public class GameEngine {
             }
         }
     }
+
+    public void interaction() {
+        if(!nowUse&&toUse!=null) {
+            logger.info("Using object: "+toUse.toString());
+            nowUse = true;
+            toUse.use();
+            nowUse = false;
+        }
+    }
+
     public void addObject(Steerable object) {
         objectsToUpdate.add(object);
     }

@@ -44,7 +44,6 @@ public class GameController {
         Doors mainEntrance = new Doors(mainDoors);
         gameEngine.addUsable(mainEntrance);
         colliderContainer.getChildren().add(mainEntrance.collisionBox);
-//        gameEngine.addCollisions(mainEntrance.collisionBox);
         logger.info("mainDoors: "+mainDoors.getX()+" "+mainDoors.getY());
         logger.info("RectDoor: "+mainEntrance.collisionBox.toString());
     }
@@ -96,6 +95,8 @@ public class GameController {
                     case SHIFT:
                         object.setSprint(true);
                         break;
+                    case F:
+                        gameEngine.interaction();
                 }
             }
         });
