@@ -13,8 +13,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import models.Doors;
 import models.Player;
 import models.Steerable;
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -22,6 +25,7 @@ import java.util.TimerTask;
 
 
 public class GameController {
+    private Logger logger = Logger.getLogger(GameController.class);
     private ViewController viewController;
     private Steerable object;
     private GameEngine gameEngine = new GameEngine();
@@ -33,10 +37,16 @@ public class GameController {
     private Pane newGamePane;
     @FXML
     public void initialize() {
+        DOMConfigurator.configure("log4j2.xml");
         Player player = new Player();
         newGamePane.getChildren().add(player.getPlayerTransform());
         object = player;
-//        colliderContainer.getChildren().add(new Rectangle())
+        Doors mainEntrance = new Doors(mainDoors);
+        gameEngine.addUsable(mainEntrance);
+        colliderContainer.getChildren().add(mainEntrance.collisionBox);
+//        gameEngine.addCollisions(mainEntrance.collisionBox);
+        logger.info("mainDoors: "+mainDoors.getX()+" "+mainDoors.getY());
+        logger.info("RectDoor: "+mainEntrance.collisionBox.toString());
     }
 
     void setViewController(ViewController aViewController) {

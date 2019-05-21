@@ -16,7 +16,7 @@
             <Cursor fx:constant="DISAPPEAR" />
          </cursor>
       </ImageView>
-      <ImageView fx:id="mainDoors" fitHeight="44.0" fitWidth="118.0" layoutX="839.0" layoutY="878.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="mainDoors" fitHeight="44.0" fitWidth="118.0" pickOnBounds="true" preserveRatio="true" x="839.0" y="878.0">
          <image>
             <Image url="@../resources/doors.png" />
          </image>
