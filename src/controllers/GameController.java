@@ -11,7 +11,6 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import models.Doors;
 import models.Player;
@@ -36,10 +35,11 @@ public class GameController {
     @FXML
     private Pane newGamePane;
     @FXML
+    private ImageView playerTransform;
+    @FXML
     public void initialize() {
         DOMConfigurator.configure("log4j2.xml");
-        Player player = new Player();
-        newGamePane.getChildren().add(player.getPlayerTransform());
+        Player player = new Player(playerTransform);
         object = player;
         Doors mainEntrance = new Doors(mainDoors);
         gameEngine.addUsable(mainEntrance);

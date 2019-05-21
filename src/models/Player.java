@@ -20,14 +20,15 @@ public class Player implements Steerable {
     private double step =0.0;
     private Rectangle bounds;
 
-    public Player() {
+    public Player(ImageView aPlayerTransform) {
         stand = new Image(this.getClass().getResource("/resources/player.png").toString());
         cl = new Image(this.getClass().getResource("/resources/playerCl.png").toString());
         walkl = new Image(this.getClass().getResource("/resources/walkl.png").toString());
         walkr = new Image(this.getClass().getResource("/resources/walkr.png").toString());
         runl = new Image(this.getClass().getResource("/resources/runl.png").toString());
         runr = new Image(this.getClass().getResource("/resources/runr.png").toString());
-        playerTransform = new ImageView(stand);
+        playerTransform = aPlayerTransform;
+        playerTransform.setImage(stand);
         playerTransform.setX(x);
         playerTransform.setY(y);
         playerTransform.setRotate(rotation);

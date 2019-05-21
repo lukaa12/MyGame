@@ -5,6 +5,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Point3D;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
@@ -25,11 +27,6 @@ public class Doors implements Usable {
         closed = true;
         logger.info(doorPicture.toString()+doorPicture.getX()+doorPicture.getY());
         collisionBox = new Rectangle(doorPicture.getX()-30,doorPicture.getY()-40,doorPicture.getFitWidth(),doorPicture.getFitHeight());
-//        Point3D rotationAxis = doorPicture.getRotationAxis();
-//        logger.info(rotationAxis.toString());
-//        Point3D newRotationAxis = rotationAxis.add(-(doorPicture.getFitWidth())/2,0.0,0.0);
-//        logger.info(newRotationAxis.toString());
-//        doorPicture.setRotationAxis(newRotationAxis);
     }
 
     @Override
@@ -50,6 +47,8 @@ public class Doors implements Usable {
                 doorPicture.getTransforms().add(rotation);
             }));
             timeline.setCycleCount(120);
+            MediaPlayer doorSound = new MediaPlayer(new Media(this.getClass().getResource("/resources/openDoor.mp3").toString()));
+            doorSound.play();
             timeline.play();
         } else {
             logger.info("Zamykam drzwi");
@@ -62,7 +61,11 @@ public class Doors implements Usable {
                 doorPicture.getTransforms().add(rotation);
             }));
             timeline.setCycleCount(120);
+            MediaPlayer doorSound1 = new MediaPlayer(new Media(this.getClass().getResource("/resources/closeDoor.mp3").toString()));
             timeline.play();
+//            doorSound.setStartTime(Duration.seconds(1.1));
+
+            doorSound1.play();
         }
     }
 }

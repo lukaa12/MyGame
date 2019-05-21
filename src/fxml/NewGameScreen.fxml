@@ -21,11 +21,6 @@
             <Image url="@../resources/doors.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="44.0" fitWidth="118.0" layoutX="839.0" layoutY="856.0" pickOnBounds="true">
-         <image>
-            <Image url="@../resources/gate.png" />
-         </image>
-      </ImageView>
       <Pane fx:id="colliderContainer" centerShape="false" maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" scaleShape="false" visible="false">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="685.0" layoutX="359.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="66.0" />
@@ -35,5 +30,16 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="65.0" layoutX="901.0" layoutY="821.0" stroke="BLACK" strokeType="INSIDE" width="572.0" />
          </children>
       </Pane>
+      <ImageView fx:id="playerTransform" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/player.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="44.0" fitWidth="118.0" layoutX="839.0" layoutY="856.0" pickOnBounds="true">
+         <image>
+            <Image url="@../resources/gate.png" />
+         </image>
+      </ImageView>
+      <Rectangle fx:id="changeMap" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="196.0" layoutX="756.0" layoutY="920.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="300.0" />
    </children>
 </Pane>
