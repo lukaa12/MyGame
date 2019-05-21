@@ -33,6 +33,10 @@ public class Player implements Steerable {
         playerTransform.setRotate(rotation);
         bounds = new Rectangle();
     }
+    public Player(int test) {
+        bounds = new Rectangle();
+        playerTransform = new ImageView();
+    }
 
     public synchronized void drawMe() {
         this.setImage();

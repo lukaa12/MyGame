@@ -8,8 +8,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import models.Player;
 import models.Steerable;
@@ -24,6 +26,8 @@ public class GameController {
     private Steerable object;
     private GameEngine gameEngine = new GameEngine();
     @FXML
+    private ImageView mainDoors;
+    @FXML
     private Pane colliderContainer;
     @FXML
     private Pane newGamePane;
@@ -32,6 +36,7 @@ public class GameController {
         Player player = new Player();
         newGamePane.getChildren().add(player.getPlayerTransform());
         object = player;
+//        colliderContainer.getChildren().add(new Rectangle())
     }
 
     void setViewController(ViewController aViewController) {
