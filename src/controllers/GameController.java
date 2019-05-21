@@ -4,13 +4,10 @@ import engine.GameEngine;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -25,11 +22,7 @@ import java.util.TimerTask;
 public class GameController {
     private ViewController viewController;
     private Steerable object;
-    private GameEngine gameEngine;
-    private volatile boolean inRun = true;
-//    private ImageView map = new ImageView(new Image(this.getClass().getResource("/resources/home.png").toString()));
-//    @FXML
-//    ImageView map;
+    private GameEngine gameEngine = new GameEngine();
     @FXML
     private Pane colliderContainer;
     @FXML
@@ -41,23 +34,14 @@ public class GameController {
         object = player;
     }
 
-    void setViewController(ViewController viewController) {
-//        ObservableList<Node> tmp = newGamePane.getChildren();
-//        newGamePane.getChildren().clear();
-//        newGamePane.getChildren().add(map);
-//        newGamePane.getChildren().add(0,);
-//        map.fitWidthProperty().bind(newGamePane.widthProperty());
-//        map.fitHeightProperty().bind(newGamePane.widthProperty());
+    void setViewController(ViewController aViewController) {
         Timer timer = new Timer();
-        this.viewController = viewController;
-        gameEngine = new GameEngine();
+        viewController = aViewController;
         gameEngine.addObject(object);
         for(Node i: colliderContainer.getChildren()) {
             gameEngine.addCollisions(i);
         }
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(16), e ->{
-            gameEngine.run();
-        }));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(16), e -> gameEngine.run()));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
         this.viewController.getScene().setOnKeyPressed(new EventHandler<>() {

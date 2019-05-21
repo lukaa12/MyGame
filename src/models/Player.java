@@ -14,7 +14,7 @@ public class Player implements Steerable {
     private double y = 540.0;
     private int rotation = 180;
     private boolean  isRunning, isSquating, isJumping;
-    private boolean up, down, left, right;
+    private boolean up, down, left, right, colision;
     private ImageView playerTransform;
     private Image stand, walkr, walkl, runr, runl, cl;
     private double step =0.0;
@@ -45,7 +45,7 @@ public class Player implements Steerable {
 
     @Override
     public synchronized void setImage() {
-        if(!up&&!down&&!right&&!left) {
+        if((!up&&!down&&!right&&!left)||colision) {
             playerTransform.setImage(stand);
         }
         else if(step>0.4&&!isRunning) {
@@ -83,7 +83,8 @@ public class Player implements Steerable {
     @Override
     public void update(double deltaTime, Vector<Node> collide) {
         double oldX = x, oldY = y;
-        boolean inMotion = false, colision = false;
+        boolean inMotion = false;
+        colision = false;
         if(right&&!left) {
             if(up&&!down) {
                 inMotion = true;
@@ -155,9 +156,9 @@ public class Player implements Steerable {
         return y;
     }
 
-    public int getRotation() {
-        return rotation;
-    }
+//    public int getRotation() {
+//        return rotation;
+//    }
 
     @Override
     public void setUp(boolean set) {

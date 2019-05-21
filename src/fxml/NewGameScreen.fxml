@@ -16,13 +16,18 @@
             <Cursor fx:constant="DISAPPEAR" />
          </cursor>
       </ImageView>
-      <Pane fx:id="colliderContainer" centerShape="false" maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" scaleShape="false">
+      <ImageView fitHeight="44.0" fitWidth="118.0" layoutX="839.0" layoutY="856.0" pickOnBounds="true">
+         <image>
+            <Image url="@../resources/gate.png" />
+         </image>
+      </ImageView>
+      <Pane fx:id="colliderContainer" centerShape="false" maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" scaleShape="false" visible="false">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="685.0" layoutX="410.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="410.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="1030.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="410.0" layoutY="840.0" stroke="BLACK" strokeType="INSIDE" width="908.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="685.0" layoutX="1410.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="378.0" layoutX="619.0" layoutY="286.0" stroke="BLACK" strokeType="INSIDE" width="112.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="685.0" layoutX="359.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="66.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="65.0" layoutX="410.0" layoutY="145.0" stroke="BLACK" strokeType="INSIDE" width="1030.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="65.0" layoutX="410.0" layoutY="821.0" stroke="BLACK" strokeType="INSIDE" width="414.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="685.0" layoutX="1389.0" layoutY="187.0" stroke="BLACK" strokeType="INSIDE" width="66.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="65.0" layoutX="901.0" layoutY="821.0" stroke="BLACK" strokeType="INSIDE" width="572.0" />
          </children>
       </Pane>
    </children>

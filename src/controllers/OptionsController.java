@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.MediaPlayer;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.w3c.dom.Document;
@@ -23,7 +22,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class OptionsController {
-    Logger logger = Logger.getLogger(OptionsController.class);
+    private Logger logger = Logger.getLogger(OptionsController.class);
     private ViewController viewController;
     @FXML
     private Pane optionsPane;
@@ -42,7 +41,7 @@ public class OptionsController {
         Document doc = MenuController.doc;
         Node soundMenu = null;
         Element musicOptions = null;
-        int volumeLevel = 100;
+        int volumeLevel;
         volume.setMax(1.0);
         volume.setMin(0.0);
         volume.setShowTickMarks(true);
@@ -55,7 +54,7 @@ public class OptionsController {
                 musicOptions = (Element) soundMenu;
             }
             logger.info(soundMenu.getAttributes().getNamedItem("enabled").toString());
-            if(musicOptions.getAttribute("enabled").equals("true")) {
+            if(musicOptions!=null && musicOptions.getAttribute("enabled").equals("true")) {
                 menuMusic.setSelected(true);
             }
             logger.info("Volume: "+soundMenu.getAttributes().getNamedItem("volume"));
