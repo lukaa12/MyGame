@@ -198,4 +198,7 @@ public class Player implements Steerable {
     public void setSquat(boolean set) {
         isSquating= set;
     }
+
+    public boolean isUp() {return up;}
+    public boolean isLeft() {return left;}
 }

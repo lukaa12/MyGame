@@ -31,4 +31,23 @@ class PlayerTest {
         Player tester = new Player(1);
         assertEquals(540.0,tester.getY());
     }
+
+    @org.junit.jupiter.api.Test
+    void steeringTest() {
+        Player tester = new Player(1);
+        assertFalse(tester.isLeft());
+        assertFalse(tester.isUp());
+        tester.setLeft(true);
+        assertTrue(tester.isLeft());
+        tester.setUp(true);
+        assertTrue(tester.isUp());
+        tester.setLeft(false);
+        assertFalse(tester.isLeft());
+        double x,y;
+        x = tester.getX();
+        y = tester.getY();
+        tester.update(0.7,new Vector<Node>());
+        assertEquals(x,tester.getX());
+        assertNotEquals(y,tester.getY());
+    }
 }
