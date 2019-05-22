@@ -85,7 +85,13 @@ public class OptionsController {
                 Transformer transformer = null;
                 try {
                     transformer = TransformerFactory.newInstance().newTransformer();
-                    Result output = new StreamResult(new File("C:/Users/Public/ProjektyJava/MyGame/src/resources/settings.xml"));
+                    String path = new String(this.getClass().getResource("/resources/settings.xml").toString());
+                    logger.info(path);
+                    path = path.replaceFirst("out/production/MyGame/resources/settings.xml","src/resources/settings.xml");
+                    path = path.replaceFirst("file:/C","C");
+                    logger.info(path);
+                    Result output = new StreamResult(new File(path));
+//                    Result output = new StreamResult(new File(this.getClass().getResource("/resources/settings.xml").toString()));
                     Source input = new DOMSource(finalDoc);
                     transformer.transform(input, output);
                 } catch (TransformerException e) {
