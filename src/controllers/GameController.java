@@ -40,6 +40,7 @@ public class GameController {
     public void initialize() {
         DOMConfigurator.configure("log4j2.xml");
         Player player = new Player(playerTransform);
+        player.scene = newGamePane;
         object = player;
         Doors mainEntrance = new Doors(mainDoors);
         gameEngine.addUsable(mainEntrance);
@@ -123,6 +124,11 @@ public class GameController {
         });
         int timeStep =  16;
         timer.schedule(new Renderer(object),0L,timeStep);
+    }
+
+    void goOutside()
+    {
+
     }
 }
 
