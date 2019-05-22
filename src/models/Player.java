@@ -3,6 +3,7 @@ package models;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 import java.util.Vector;
@@ -19,6 +20,7 @@ public class Player implements Steerable {
     private Image stand, walkr, walkl, runr, runl, cl;
     private double step =0.0;
     private Rectangle bounds;
+    public Pane scene;
 
     public Player(ImageView aPlayerTransform) {
         stand = new Image(this.getClass().getResource("/resources/player.png").toString());
@@ -43,6 +45,8 @@ public class Player implements Steerable {
         this.setImage();
         playerTransform.setY(y);
         playerTransform.setX(x);
+        scene.setTranslateY(540.0-y);
+        scene.setTranslateX(960.0-x);
         playerTransform.setRotate(rotation);
     }
 
