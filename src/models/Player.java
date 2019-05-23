@@ -127,6 +127,7 @@ public class Player implements Steerable {
                 inMotion = true;
             }
         }
+
         if(this.isRunning&&inMotion) {
             x += Math.sin(Math.toRadians(rotation))*RUNSPEED*deltaTime;
             y -= Math.cos(Math.toRadians(rotation))*RUNSPEED*deltaTime;
