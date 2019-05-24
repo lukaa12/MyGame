@@ -141,6 +141,11 @@ public class GameController {
     {
 
     }
+
+    void goOutside()
+    {
+
+    }
 }
 
 class Renderer extends TimerTask {
