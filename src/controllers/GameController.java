@@ -98,6 +98,7 @@ public class GameController {
                         break;
                     case F:
                         gameEngine.interaction();
+                        break;
                 }
             }
         });

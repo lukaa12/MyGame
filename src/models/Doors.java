@@ -17,8 +17,8 @@ public class Doors implements Usable {
     private Logger logger = Logger.getLogger(Doors.class);
     public Rectangle collisionBox;
     private boolean closed;
-//    private double x,y;
-//    private int rotation;
+    private MediaPlayer doorOpen = new MediaPlayer(new Media(this.getClass().getResource("/resources/openDoor.mp3").toString()));
+    private MediaPlayer doorClose = new MediaPlayer(new Media(this.getClass().getResource("/resources/closeDoor.mp3").toString()));
     private ImageView doorPicture;
 
     public Doors(ImageView aDoorPicture) {
@@ -47,8 +47,8 @@ public class Doors implements Usable {
                 doorPicture.getTransforms().add(rotation);
             }));
             timeline.setCycleCount(120);
-            MediaPlayer doorSound = new MediaPlayer(new Media(this.getClass().getResource("/resources/openDoor.mp3").toString()));
-            doorSound.play();
+            doorOpen.seek(Duration.ZERO);
+            doorOpen.play();
             timeline.play();
         } else {
             logger.info("Zamykam drzwi");
@@ -61,11 +61,9 @@ public class Doors implements Usable {
                 doorPicture.getTransforms().add(rotation);
             }));
             timeline.setCycleCount(120);
-            MediaPlayer doorSound1 = new MediaPlayer(new Media(this.getClass().getResource("/resources/closeDoor.mp3").toString()));
             timeline.play();
-//            doorSound.setStartTime(Duration.seconds(1.1));
-
-            doorSound1.play();
+            doorClose.seek(Duration.ZERO);
+            doorClose.play();
         }
     }
 }
