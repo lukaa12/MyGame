@@ -56,6 +56,11 @@
             <Image url="@../resources/roof.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="garageRoof" pickOnBounds="true" preserveRatio="true" visible="false" x="-420.0" y="1280.0">
+          <image>
+              <Image url="@../resources/garageRoof.png" />
+          </image>
+      </ImageView>
    </children>
    <cursor>
       <Cursor fx:constant="DISAPPEAR" />

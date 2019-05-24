@@ -42,6 +42,8 @@ public class GameController {
     @FXML
     ImageView roof;
     @FXML
+    ImageView garageRoof;
+    @FXML
     public void initialize() {
         DOMConfigurator.configure("log4j2.xml");
         Player player = new Player(playerTransform);
@@ -155,6 +157,11 @@ class Renderer extends TimerTask {
             gameController.roof.setVisible(false);
         } else {
             gameController.roof.setVisible(true);
+        }
+        if(gameController.garageRoof.contains(object.getX(),object.getY())) {
+            gameController.garageRoof.setVisible(false);
+        } else {
+            gameController.garageRoof.setVisible(true);
         }
     }
 }
