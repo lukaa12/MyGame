@@ -16,18 +16,29 @@
             <Cursor fx:constant="DISAPPEAR" />
          </cursor>
       </ImageView>
+      <ImageView pickOnBounds="true" preserveRatio="true" x="-500.0" y="1080.0">
+         <image>
+            <Image url="@../resources/garage.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="mainDoors" fitHeight="44.0" fitWidth="118.0" pickOnBounds="true" preserveRatio="true" x="839.0" y="878.0">
          <image>
             <Image url="@../resources/doors.png" />
          </image>
       </ImageView>
-      <Pane fx:id="colliderContainer" centerShape="false" maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" scaleShape="false" visible="false">
+      <Pane fx:id="colliderContainer" layoutX="-800.0" maxHeight="3083.0" maxWidth="2634.0" minHeight="1080.0" minWidth="1920.0" prefHeight="3083.0" prefWidth="2634.0" visible="false">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="685.0" layoutX="359.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="66.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="65.0" layoutX="410.0" layoutY="145.0" stroke="BLACK" strokeType="INSIDE" width="1030.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="65.0" layoutX="410.0" layoutY="821.0" stroke="BLACK" strokeType="INSIDE" width="414.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="685.0" layoutX="1389.0" layoutY="187.0" stroke="BLACK" strokeType="INSIDE" width="66.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="65.0" layoutX="901.0" layoutY="821.0" stroke="BLACK" strokeType="INSIDE" width="572.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="65.0" layoutX="359.0" layoutY="145.0" stroke="BLACK" strokeType="INSIDE" width="1081.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="65.0" layoutX="367.0" layoutY="821.0" stroke="BLACK" strokeType="INSIDE" width="457.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="727.0" layoutX="1389.0" layoutY="145.0" stroke="BLACK" strokeType="INSIDE" width="66.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="65.0" layoutX="901.0" layoutY="821.0" stroke="BLACK" strokeType="INSIDE" width="540.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="185.0" layoutX="210.0" layoutY="1265.0" stroke="BLACK" strokeType="INSIDE" width="70.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="243.0" layoutX="210.0" layoutY="1739.0" stroke="BLACK" strokeType="INSIDE" width="70.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="176.0" layoutX="210.0" layoutY="2278.0" stroke="BLACK" strokeType="INSIDE" width="70.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="1190.0" layoutX="-447.0" layoutY="1265.0" stroke="BLACK" strokeType="INSIDE" width="70.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="70.0" layoutX="-447.0" layoutY="1265.0" stroke="BLACK" strokeType="INSIDE" width="683.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="70.0" layoutX="-447.0" layoutY="2388.0" stroke="BLACK" strokeType="INSIDE" width="683.0" />
          </children>
       </Pane>
       <ImageView fx:id="playerTransform" pickOnBounds="true" preserveRatio="true">
@@ -40,6 +51,13 @@
             <Image url="@../resources/gate.png" />
          </image>
       </ImageView>
-      <Rectangle fx:id="changeMap" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="196.0" layoutX="756.0" layoutY="920.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="300.0" />
+      <ImageView fx:id="roof" pickOnBounds="true" preserveRatio="true" visible="false" x="380.0" y="150.0">
+         <image>
+            <Image url="@../resources/roof.png" />
+         </image>
+      </ImageView>
    </children>
+   <cursor>
+      <Cursor fx:constant="DISAPPEAR" />
+   </cursor>
 </Pane>

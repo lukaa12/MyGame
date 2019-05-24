@@ -18,6 +18,7 @@ import models.Steerable;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,6 +37,10 @@ public class GameController {
     private Pane newGamePane;
     @FXML
     private ImageView playerTransform;
+//    @FXML
+//    private Rectangle inDoorBox;
+    @FXML
+    ImageView roof;
     @FXML
     public void initialize() {
         DOMConfigurator.configure("log4j2.xml");
@@ -47,6 +52,9 @@ public class GameController {
         colliderContainer.getChildren().add(mainEntrance.collisionBox);
         logger.info("mainDoors: "+mainDoors.getX()+" "+mainDoors.getY());
         logger.info("RectDoor: "+mainEntrance.collisionBox.toString());
+        if(roof.contains(object.getX(),object.getY())) {
+            roof.setVisible(false);
+        }
     }
 
     void setViewController(ViewController aViewController) {
@@ -124,7 +132,7 @@ public class GameController {
             }
         });
         int timeStep =  16;
-        timer.schedule(new Renderer(object),0L,timeStep);
+        timer.schedule(new Renderer(object, this),0L,timeStep);
     }
 
     void goOutside()
@@ -135,11 +143,18 @@ public class GameController {
 
 class Renderer extends TimerTask {
     private Steerable object;
-    Renderer(Steerable st) {
+    GameController gameController;
+    Renderer(Steerable st, GameController gc) {
+        gameController =gc;
         object = st;
     }
     @Override
     public void run() {
         object.drawMe();
+        if(gameController.roof.contains(object.getX(),object.getY())) {
+            gameController.roof.setVisible(false);
+        } else {
+            gameController.roof.setVisible(true);
+        }
     }
 }
