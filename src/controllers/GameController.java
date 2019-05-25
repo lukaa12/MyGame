@@ -4,12 +4,15 @@ import engine.GameEngine;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import models.Doors;
@@ -18,17 +21,19 @@ import models.Steerable;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.Timer;
 import java.util.TimerTask;
 
 
 public class GameController {
     private Logger logger = Logger.getLogger(GameController.class);
+    private boolean paused = false;
     private ViewController viewController;
     private Steerable object;
     private GameEngine gameEngine = new GameEngine();
+    private Renderer renderer;
+    private Timeline timeline;
+    private Timeline rendererTimeline;
     @FXML
     private ImageView mainDoors;
     @FXML
@@ -53,6 +58,7 @@ public class GameController {
     public void initialize() {
         DOMConfigurator.configure("log4j2.xml");
         Player player = new Player(playerTransform);
+        renderer = new Renderer(player, this);
         player.scene = newGamePane;
         object = player;
         Doors doors = new Doors(mainDoors);
@@ -79,33 +85,37 @@ public class GameController {
     }
 
     void setViewController(ViewController aViewController) {
-        Timer timer = new Timer();
+//        Timer timer = new Timer();
         viewController = aViewController;
         gameEngine.addObject(object);
         for(Node i: colliderContainer.getChildren()) {
             gameEngine.addCollisions(i);
         }
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(16), e -> gameEngine.run()));
+        timeline = new Timeline(new KeyFrame(Duration.millis(16), e -> gameEngine.run()));
+        rendererTimeline = new Timeline(new KeyFrame(Duration.millis(16), e -> renderer.run()));
         timeline.setCycleCount(Animation.INDEFINITE);
+        rendererTimeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+        rendererTimeline.play();
         this.viewController.getScene().setOnKeyPressed(new EventHandler<>() {
             @Override
             public void handle(KeyEvent keyEvent) {
                 switch (keyEvent.getCode()) {
                     case ESCAPE:
-                        timeline.stop();
-                        timer.cancel();
-                        viewController.mainStackPane.getChildren().clear();
-                        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/MenuScreen.fxml"));
-                        Pane menuPane = null;
-                        try {
-                            menuPane = loader.load();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        MenuController menuController = loader.getController();
-                        menuController.setViewController(viewController);
-                        viewController.mainStackPane.getChildren().add(menuPane);
+                        pauseGame();
+//                        timeline.stop();
+//                        rendererTimeline.stop();
+//                        viewController.mainStackPane.getChildren().clear();
+//                        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/MenuScreen.fxml"));
+//                        Pane menuPane = null;
+//                        try {
+//                            menuPane = loader.load();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                        MenuController menuController = loader.getController();
+//                        menuController.setViewController(viewController);
+//                        viewController.mainStackPane.getChildren().add(menuPane);
                         break;
                     case W:
                         object.setUp(true);
@@ -152,10 +162,66 @@ public class GameController {
                     break;
             }
         });
-        int timeStep =  16;
-        timer.schedule(new Renderer(object, this),0L,timeStep);
+//        int timeStep =  16;
+//        timer.schedule(new Renderer(object, this),0L,timeStep);
     }
 
+    private void pauseGame() {
+        if(paused)
+            return;
+        paused = true;
+        timeline.pause();
+        rendererTimeline.pause();
+        FXMLLoader pauseLoader = new FXMLLoader(this.getClass().getResource("/fxml/PausePane.fxml"));
+        AnchorPane pausePane = null;
+        try {
+            pausePane = pauseLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        pausePane.setTranslateX(playerTransform.getX()-350.0);
+        pausePane.setTranslateY(playerTransform.getY()-250.0);
+        newGamePane.getChildren().add(pausePane);
+        AnchorPane finalPausePane = pausePane;
+        EventHandler<ActionEvent> optionsHandler = actionEvent -> {
+            logger.info("Pressed: "+actionEvent.getSource());
+            if(actionEvent.getSource().toString().equals("Button[id=continueButton, styleClass=button]\'WZNÓW\'")) {
+              logger.info("Powrót do gry");
+              newGamePane.getChildren().remove(finalPausePane);
+              timeline.play();
+              rendererTimeline.play();
+              paused = false;
+            } else {//if(actionEvent.getSource().equals("Button[id=exitButton, styleClass=button]\'WYJDŹ\'")) {
+                        logger.info("WYJDŹ");
+                        timeline.stop();
+                        rendererTimeline.stop();
+                        viewController.mainStackPane.getChildren().clear();
+                        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/MenuScreen.fxml"));
+                        Pane menuPane = null;
+                        try {
+                            menuPane = loader.load();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        MenuController menuController = loader.getController();
+                        menuController.setViewController(viewController);
+                        viewController.mainStackPane.getChildren().add(menuPane);
+            }
+        };
+        Node btn1 = pausePane.getChildren().get(0);
+        Button btn = null;
+        if(btn1 instanceof Button) {
+            btn = (Button) btn1;
+            btn.addEventHandler(ActionEvent.ACTION,optionsHandler);
+            logger.info("Wznów is button");
+        }
+        btn1 = pausePane.getChildren().get(2);
+        if(btn1 instanceof Button) {
+            btn = (Button) btn1;
+            btn.addEventHandler(ActionEvent.ACTION,optionsHandler);
+            logger.info("Wyjdź is button");
+        }
+    }
 }
 
 class Renderer extends TimerTask {
