@@ -113,7 +113,19 @@ public class MenuController {
                 loadChoice.setVisible(true);
                 if(loadChoice.getValue()==null)
                     return;
-
+                mediaPlayer.stop();
+                FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/NewGameScreen.fxml"));
+                Pane newGamePane = null;
+                try {
+                    newGamePane = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                GameController controller = loader.getController();
+                controller.saveGameToPick = loadChoice.getValue();
+                controller.setViewController(viewController);
+                viewController.mainStackPane.getChildren().clear();
+                viewController.mainStackPane.getChildren().add(newGamePane);
             }
         };
         exit.addEventHandler(ActionEvent.ACTION,menuHandler);

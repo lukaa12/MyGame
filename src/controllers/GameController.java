@@ -191,8 +191,10 @@ public class GameController {
                         if(nodeTmp.getAttributes().getNamedItem("name").toString().equals("name=\""+saveGameToPick+"\"")) {
                             Player player = (Player) object;
                             double x,y,r;
-//                            x = Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerX"));
-                            player.loadCoords();
+                            x = Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerX").getNodeValue());
+                            y = Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerY").getNodeValue());
+                            r = Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerRotation").getNodeValue());
+                            player.loadCoords(x,y,(int) r);
                             break;
                         }
                     }
