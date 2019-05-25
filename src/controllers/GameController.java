@@ -4,12 +4,14 @@ import engine.GameEngine;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -20,7 +22,16 @@ import models.Player;
 import models.Steerable;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
 import java.io.IOException;
 import java.util.TimerTask;
 
@@ -179,19 +190,79 @@ public class GameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        pausePane.setTranslateX(playerTransform.getX()-350.0);
+        pausePane.setTranslateX(playerTransform.getX()-300.0);
         pausePane.setTranslateY(playerTransform.getY()-250.0);
+        ChoiceBox<String> savegamePicker = new ChoiceBox<>(FXCollections.observableArrayList("SAVE1","SAVE2","SAVE3","SAVE4","SAVE5"));
+        pausePane.getChildren().add(savegamePicker);
+        savegamePicker.setTranslateX(400.0);
+        savegamePicker.setTranslateY(200.0);
         newGamePane.getChildren().add(pausePane);
         AnchorPane finalPausePane = pausePane;
         EventHandler<ActionEvent> optionsHandler = actionEvent -> {
-            logger.info("Pressed: "+actionEvent.getSource());
+            logger.info(actionEvent.getSource());
             if(actionEvent.getSource().toString().equals("Button[id=continueButton, styleClass=button]\'WZNÓW\'")) {
               logger.info("Powrót do gry");
               newGamePane.getChildren().remove(finalPausePane);
               timeline.play();
               rendererTimeline.play();
               paused = false;
-            } else {//if(actionEvent.getSource().equals("Button[id=exitButton, styleClass=button]\'WYJDŹ\'")) {
+            }
+            if(actionEvent.getSource().toString().equals("Button[id=saveButton, styleClass=button]\'ZAPISZ\'")) {
+                logger.info("SAVE");
+
+               // finalPausePane.getChildren().add(savegamePicker);
+                DocumentBuilder documentBuilder = null;
+                Document savegames = null;
+                try {
+                    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                    documentBuilder = dbFactory.newDocumentBuilder();
+                    savegames = documentBuilder.parse(this.getClass().getResourceAsStream("/resources/savegames.xml"));
+                    savegames.getDocumentElement().normalize();
+                    logger.info(savegames.getDocumentElement().getNodeName()+" read.");
+                    org.w3c.dom.Node sejwy = savegames.getChildNodes().item(0);
+                    logger.info(sejwy.getChildNodes().getLength());
+                    logger.info(sejwy.getChildNodes().item(0).toString());
+                    org.w3c.dom.Element savegame = savegames.createElement("savegame");
+                    logger.info(savegamePicker.getValue());
+                    if(savegamePicker.getValue()==null) {
+                        return;
+                    }
+                    savegame.setAttribute("name",savegamePicker.getValue());
+                    savegame.setAttribute("playerX",Double.toString(playerTransform.getX()));
+                    savegame.setAttribute("playerY",Double.toString(playerTransform.getY()));
+                    savegame.setAttribute("playerRotation",Double.toString(playerTransform.getRotate()));
+                    boolean nadPisz = false;
+                    for(int index=0; index<sejwy.getChildNodes().getLength();++index) {
+                        org.w3c.dom.Node nodeTmp= sejwy.getChildNodes().item(index);
+                        if(nodeTmp.hasAttributes()){
+                            logger.info(nodeTmp.getAttributes().getNamedItem("name"));
+                            logger.info("name=\""+savegamePicker.getValue()+"\"");
+                            logger.info(nodeTmp.getAttributes().getNamedItem("name").toString().equals("name=\""+savegamePicker.getValue()+"\""));
+                            if(nodeTmp.getAttributes().getNamedItem("name").toString().equals("name=\""+savegamePicker.getValue()+"\"")) {
+                                nadPisz = true;
+                                sejwy.replaceChild(savegame,nodeTmp);
+                                break;
+                            }
+                        }
+                    }
+                    if(!nadPisz) {
+                        sejwy.appendChild(savegame);
+                    }
+//                     transformer = null;
+                    Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                    String path = new String(this.getClass().getResource("/resources/savegames.xml").toString());
+                    logger.info(path);
+                    path = path.replaceFirst("out/production/MyGame/resources/savegames.xml","src/resources/savegames.xml");
+                    path = path.replaceFirst("file:/C","C");
+                    logger.info(path);
+                    Result output = new StreamResult(new File(path));
+                    Source input = new DOMSource(savegames);
+                    transformer.transform(input, output);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if(actionEvent.getSource().toString().equals("Button[id=exitButton, styleClass=button]\'WYJDŹ\'")) {
                         logger.info("WYJDŹ");
                         timeline.stop();
                         rendererTimeline.stop();
@@ -214,6 +285,12 @@ public class GameController {
             btn = (Button) btn1;
             btn.addEventHandler(ActionEvent.ACTION,optionsHandler);
             logger.info("Wznów is button");
+        }
+        btn1 = pausePane.getChildren().get(1);
+        if(btn1 instanceof Button) {
+            btn = (Button) btn1;
+            btn.addEventHandler(ActionEvent.ACTION,optionsHandler);
+            logger.info("Zapisz is button");
         }
         btn1 = pausePane.getChildren().get(2);
         if(btn1 instanceof Button) {
