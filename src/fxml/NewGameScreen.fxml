@@ -26,6 +26,26 @@
             <Image url="@../resources/doors.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="garageDoors1" fitHeight="16.0" fitWidth="167.0" pickOnBounds="true" preserveRatio="true" x="275.0" y="1443.0">
+         <image>
+            <Image url="@../resources/garageDoors.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="garageDoors2" fitHeight="16.0" fitWidth="167.0" pickOnBounds="true" preserveRatio="true" x="275.0" y="1775.0">
+         <image>
+            <Image url="@../resources/garageDoors.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="garageDoors3" fitHeight="16.0" fitWidth="167.0" pickOnBounds="true" preserveRatio="true" x="275.0" y="1980.0">
+         <image>
+            <Image url="@../resources/garageDoors.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="garageDoors4" fitHeight="16.0" fitWidth="167.0" pickOnBounds="true" preserveRatio="true" x="275.0" y="2308.0">
+         <image>
+            <Image url="@../resources/garageDoors.png" />
+         </image>
+      </ImageView>
       <Pane fx:id="colliderContainer" layoutX="-800.0" maxHeight="3083.0" maxWidth="2634.0" minHeight="1080.0" minWidth="1920.0" prefHeight="3083.0" prefWidth="2634.0" visible="false">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="685.0" layoutX="359.0" layoutY="185.0" stroke="BLACK" strokeType="INSIDE" width="66.0" />

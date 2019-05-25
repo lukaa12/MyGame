@@ -36,9 +36,15 @@ public class GameController {
     @FXML
     private Pane newGamePane;
     @FXML
+    private ImageView garageDoors1;
+    @FXML
+    private ImageView garageDoors2;
+    @FXML
+    private ImageView garageDoors3;
+    @FXML
+    private ImageView garageDoors4;
+    @FXML
     private ImageView playerTransform;
-//    @FXML
-//    private Rectangle inDoorBox;
     @FXML
     ImageView roof;
     @FXML
@@ -49,14 +55,27 @@ public class GameController {
         Player player = new Player(playerTransform);
         player.scene = newGamePane;
         object = player;
-        Doors mainEntrance = new Doors(mainDoors);
-        gameEngine.addUsable(mainEntrance);
-        colliderContainer.getChildren().add(mainEntrance.collisionBox);
+        Doors doors = new Doors(mainDoors);
+        gameEngine.addUsable(doors);
+        colliderContainer.getChildren().add(doors.collisionBox);
         logger.info("mainDoors: "+mainDoors.getX()+" "+mainDoors.getY());
-        logger.info("RectDoor: "+mainEntrance.collisionBox.toString());
-        if(roof.contains(object.getX(),object.getY())) {
-            roof.setVisible(false);
-        }
+        logger.info("RectDoor: "+doors.collisionBox.toString());
+        doors = new Doors(garageDoors1,false,1);
+        doors.adjustCollision(15.0,30.0);
+        gameEngine.addUsable(doors);
+        colliderContainer.getChildren().add(doors.collisionBox);
+        doors = new Doors(garageDoors2,true,3);
+        doors.adjustCollision(30.0,-30.0);
+        gameEngine.addUsable(doors);
+        colliderContainer.getChildren().add(doors.collisionBox);
+        doors = new Doors(garageDoors3,false,1);
+        doors.adjustCollision(15.0,30.0);
+        gameEngine.addUsable(doors);
+        colliderContainer.getChildren().add(doors.collisionBox);
+        doors = new Doors(garageDoors4,true,3);
+        doors.adjustCollision(30.0,-30.0);
+        gameEngine.addUsable(doors);
+        colliderContainer.getChildren().add(doors.collisionBox);
     }
 
     void setViewController(ViewController aViewController) {
@@ -137,15 +156,6 @@ public class GameController {
         timer.schedule(new Renderer(object, this),0L,timeStep);
     }
 
-    void goOutside()
-    {
-
-    }
-
-    void goOutside()
-    {
-
-    }
 }
 
 class Renderer extends TimerTask {

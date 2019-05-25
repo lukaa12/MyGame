@@ -28,23 +28,39 @@ public class Doors implements Usable {
         collisionBox = new Rectangle(doorPicture.getX()-30,doorPicture.getY()-40,doorPicture.getFitWidth(),doorPicture.getFitHeight());
     }
 
-    public Doors(ImageView aDoorPicture, boolean isRightDoors) {
+    public Doors(ImageView aDoorPicture, boolean isRightDoors, int orientation) {
         DOMConfigurator.configure("log4j2.xml");
         doorPicture = aDoorPicture;
         closed = true;
         logger.info(doorPicture.toString()+doorPicture.getX()+doorPicture.getY());
-        collisionBox = new Rectangle(doorPicture.getX()-30,doorPicture.getY()-40,doorPicture.getFitWidth(),doorPicture.getFitHeight());
+        collisionBox = new Rectangle(doorPicture.getX()-30,doorPicture.getY(),doorPicture.getFitWidth()+10,doorPicture.getFitHeight()+20);
         typeRight = isRightDoors;
+        if(orientation!=0) {
+            Rotate rotation = new Rotate(doorPicture.getRotate()+orientation*90,doorPicture.getX(),doorPicture.getY()
+                    +(doorPicture.getFitHeight()/2));
+            doorPicture.getTransforms().add(rotation);
+            collisionBox.getTransforms().add(rotation);
+        }
+    }
+
+    public void adjustCollision(double x, double y) {
+        collisionBox.setX(collisionBox.getX()+x);
+        collisionBox.setY(collisionBox.getY()+y);
     }
 
     @Override
     public boolean isReachable(double x, double y) {
-        return ((x-doorPicture.getX())*(x-doorPicture.getX())+(y-doorPicture.getY())*(y-doorPicture.getY())<=40000.0);
+        return ((x-doorPicture.getX()-doorPicture.getFitWidth()/2)*(x-doorPicture.getX()-doorPicture.getFitWidth()/2)+(y-doorPicture.getY()-doorPicture.getFitHeight()/2)*(y-doorPicture.getY()-doorPicture.getFitHeight()/2)<=40000.0);
     }
 
     @Override
     public void use() {
         double deltaGrad;
+        double width = doorPicture.getFitWidth(), height = doorPicture.getFitHeight();
+        if(width < height) {
+            width = height;
+            height = doorPicture. getFitWidth();
+        }
         if(typeRight)
             deltaGrad = 0.75;
         else
