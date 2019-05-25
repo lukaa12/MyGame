@@ -45,6 +45,7 @@ public class GameController {
     private Renderer renderer;
     private Timeline timeline;
     private Timeline rendererTimeline;
+    public String saveGameToPick;
     @FXML
     private ImageView mainDoors;
     @FXML
@@ -96,7 +97,6 @@ public class GameController {
     }
 
     void setViewController(ViewController aViewController) {
-//        Timer timer = new Timer();
         viewController = aViewController;
         gameEngine.addObject(object);
         for(Node i: colliderContainer.getChildren()) {
@@ -173,8 +173,34 @@ public class GameController {
                     break;
             }
         });
-//        int timeStep =  16;
-//        timer.schedule(new Renderer(object, this),0L,timeStep);
+        if(saveGameToPick!=null) {
+            DocumentBuilder documentBuilder = null;
+            Document savegames = null;
+            try {
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                documentBuilder = dbFactory.newDocumentBuilder();
+                savegames = documentBuilder.parse(this.getClass().getResourceAsStream("/resources/savegames.xml"));
+                savegames.getDocumentElement().normalize();
+                org.w3c.dom.Node sejwy = savegames.getChildNodes().item(0);
+                for(int index=0; index<sejwy.getChildNodes().getLength();++index) {
+                    org.w3c.dom.Node nodeTmp= sejwy.getChildNodes().item(index);
+                    if(nodeTmp.hasAttributes()){
+                        logger.info(nodeTmp.getAttributes().getNamedItem("name"));
+                        logger.info("name=\""+saveGameToPick+"\"");
+                        logger.info(nodeTmp.getAttributes().getNamedItem("name").toString().equals("name=\""+saveGameToPick+"\""));
+                        if(nodeTmp.getAttributes().getNamedItem("name").toString().equals("name=\""+saveGameToPick+"\"")) {
+                            Player player = (Player) object;
+                            double x,y,r;
+//                            x = Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerX"));
+                            player.loadCoords();
+                            break;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void pauseGame() {

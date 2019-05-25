@@ -154,6 +154,12 @@ public class Player implements Steerable {
         }
     }
 
+    public void loadCoords(double aX, double aY, int aRotation) {
+        x =aX;
+        y = aY;
+        rotation = aRotation;
+    }
+
     public ImageView getPlayerTransform() {
         return playerTransform;
     }

@@ -1,11 +1,13 @@
 package controllers;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -44,7 +46,13 @@ public class MenuController {
         if(mediaPlayer == null || sound == null) {
             sound = new Media(this.getClass().getResource("/resources/menuSong.mp3").toString());
             mediaPlayer = new MediaPlayer(sound);
+
         }
+        ChoiceBox<String> loadChoice = new ChoiceBox<>(FXCollections.observableArrayList("SAVE1","SAVE2","SAVE3","SAVE4","SAVE5"));
+        loadChoice.setVisible(false);
+        menuPane.getChildren().add(loadChoice);
+        loadChoice.setTranslateY(480);
+        loadChoice.setTranslateX(560);
         DOMConfigurator.configure("log4j2.xml");
         DocumentBuilder documentBuilder = null;
         try {
@@ -101,10 +109,17 @@ public class MenuController {
                 viewController.mainStackPane.getChildren().clear();
                 viewController.mainStackPane.getChildren().add(newGamePane);
             }
+            if(actionEvent.getSource().equals(loadGame)) {
+                loadChoice.setVisible(true);
+                if(loadChoice.getValue()==null)
+                    return;
+
+            }
         };
         exit.addEventHandler(ActionEvent.ACTION,menuHandler);
         settings.addEventHandler(ActionEvent.ACTION,menuHandler);
         newGame.addEventHandler(ActionEvent.ACTION,menuHandler);
+        loadGame.addEventHandler(ActionEvent.ACTION,menuHandler);
     }
 
 
