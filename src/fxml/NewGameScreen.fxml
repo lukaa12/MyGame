@@ -8,6 +8,11 @@
 
 <Pane fx:id="newGamePane" maxHeight="1080.0" maxWidth="1920.0" minHeight="1080.0" minWidth="1920.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GameController">
    <children>
+      <ImageView pickOnBounds="true" preserveRatio="true" x="250.0" y="-50" scaleX="10" scaleY="10">
+         <image>
+            <Image url="@../resources/map.png" />
+         </image>
+      </ImageView>
       <ImageView pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/home.png" />

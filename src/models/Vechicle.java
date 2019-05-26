@@ -109,8 +109,6 @@ public class Vechicle implements Steerable, Usable {
     @Override
     public void update(double deltaTime, Vector<Node> collide) {
         double oldX = x, oldY = y;
-        deltaTime = deltaTime;
-//        logger.info("Update car");
         colision = false;
         if(forward) {
             if (speed<0.0&&speed+acceleration*deltaTime>0.0) {
