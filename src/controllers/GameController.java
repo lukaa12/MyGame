@@ -47,6 +47,7 @@ public class GameController {
     private Timeline timeline;
     private Timeline rendererTimeline;
     private Vechicle passat;
+    private Player player;
     public String saveGameToPick;
     @FXML
     private ImageView mainDoors;
@@ -74,7 +75,7 @@ public class GameController {
     public void initialize() {
         DOMConfigurator.configure("log4j2.xml");
         gameEngine.gameController = this;
-        Player player = new Player(playerTransform);
+        player = new Player(playerTransform);
         passat = new Vechicle();
         passat.setImage(car);
         renderer = new Renderer(player, this);
@@ -144,9 +145,7 @@ public class GameController {
                     case SHIFT:
                         object.setSprint(true);
                         break;
-                    case F:
-                        gameEngine.interaction();
-                        break;
+
                 }
             }
         });
@@ -168,6 +167,11 @@ public class GameController {
                     break;
                 case SHIFT:
                     object.setSprint(false);
+                    break;
+                case F:
+                    gameEngine.interaction();
+                    if(passat.isUsed)
+                        getInCar();
                     break;
             }
         });
@@ -219,8 +223,8 @@ public class GameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        pausePane.setTranslateX(playerTransform.getX()-300.0);
-        pausePane.setTranslateY(playerTransform.getY()-250.0);
+        pausePane.setTranslateX(object.getX()-300.0);
+        pausePane.setTranslateY(object.getY()-250.0);
         ChoiceBox<String> savegamePicker = new ChoiceBox<>(FXCollections.observableArrayList("SAVE1","SAVE2","SAVE3","SAVE4","SAVE5"));
         pausePane.getChildren().add(savegamePicker);
         savegamePicker.setTranslateX(400.0);
@@ -335,12 +339,26 @@ public class GameController {
         if(passat.isUsed) {
             object = passat;
             gameEngine.addObject(passat);
+            renderer.object = passat;
+            colliderContainer.getChildren().remove(passat.getBounds());
+            gameEngine.removeCollisions(passat.getBounds());
+            playerTransform.setVisible(false);
+        }
+        else {
+            object = player;
+            gameEngine.removeObject(passat);
+            gameEngine.removeObject(passat);
+            renderer.object = player;
+            gameEngine.addCollisions(passat.getBounds());
+            player.setX(passat.getX()-70);
+            player.setY(passat.getY()+150);
+            playerTransform.setVisible(true);
         }
     }
 }
 
 class Renderer extends TimerTask {
-    private Steerable object;
+    Steerable object;
     GameController gameController;
     Renderer(Steerable st, GameController gc) {
         gameController =gc;

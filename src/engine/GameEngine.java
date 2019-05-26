@@ -30,11 +30,17 @@ public class GameEngine {
 
     public void run() {
         Player player = null;
+        Vechicle car = null;
         double deltaSecs = 0.016;
+//        logger.info(objectsToUpdate.size());
         for(Steerable obj: objectsToUpdate) {
+//            logger.info(obj.toString());
             obj.update(deltaSecs,collisions);
             if(obj instanceof Player) {
                 player = (Player) obj;
+            }
+            if(obj instanceof Vechicle) {
+                car = (Vechicle) obj;
             }
         }
         toUse = null;
@@ -43,6 +49,9 @@ public class GameEngine {
                 toUse = use;
                 break;
             }
+        }
+        if(car!=null&&car.isUsed) {
+            toUse = car;
         }
     }
 
@@ -62,7 +71,8 @@ public class GameEngine {
     public void addObject(Steerable object) {
         objectsToUpdate.add(object);
     }
+    public void removeObject(Steerable object) {objectsToUpdate.removeElement(object);}
     public void addCollisions(Node obj) {collisions.add(obj);}
-
+    public void removeCollisions(Node obj) {collisions.removeElement(obj);}
     public void addUsable(Usable obj) {usables.add(obj);}
 }

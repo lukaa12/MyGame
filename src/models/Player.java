@@ -167,7 +167,8 @@ public class Player implements Steerable {
     public double getX() {
         return x;
     }
-
+    public void setX(double aX) { x =aX;}
+    public void setY(double aY) { y =aY;}
     public double getY() {
         return y;
     }

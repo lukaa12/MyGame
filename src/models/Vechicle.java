@@ -4,12 +4,15 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 import view.Main;
 
 import java.util.Vector;
 
 public class Vechicle implements Steerable, Usable {
-    double acceleration;
+    private Logger logger = Logger.getLogger(Vechicle.class);
+    double acceleration = 60.0;
     final double maxTurn;
     final double maxSpeed;
     final double brakeForce;
@@ -24,9 +27,10 @@ public class Vechicle implements Steerable, Usable {
     public Pane scene;
 
     public Vechicle() {
-        maxTurn = 30.0;
-        brakeForce = 4.0;
-        maxSpeed = 40.0;
+        DOMConfigurator.configure("log4j2.xml");
+        maxTurn = 1.2;
+        brakeForce = 100.0;
+        maxSpeed = 400.0;
         bounds = new Rectangle();
     }
 
@@ -37,14 +41,15 @@ public class Vechicle implements Steerable, Usable {
         rotation = aCarTransform.getRotate();
         bounds.setX(x);
         bounds.setY(y);
-        bounds.setHeight(carTransform.getFitHeight());
-        bounds.setWidth(carTransform.getFitWidth());
+        bounds.setHeight(0);
+        bounds.setWidth(0);
         bounds.setRotate(rotation);
     }
 
     @Override
     public void setUp(boolean set) {
         forward = set;
+        logger.info("Accererate car: "+forward);
     }
 
     @Override
@@ -81,8 +86,8 @@ public class Vechicle implements Steerable, Usable {
     public void drawMe() {
         carTransform.setY(y);
         carTransform.setX(x);
-        scene.setTranslateY(540.0-y);
-        scene.setTranslateX(960.0-x);
+        scene.setTranslateY(290.0-y);
+        scene.setTranslateX(860.0-x);
         carTransform.setRotate(rotation);
     }
 
@@ -94,53 +99,66 @@ public class Vechicle implements Steerable, Usable {
     @Override
     public void update(double deltaTime, Vector<Node> collide) {
         double oldX = x, oldY = y;
+        deltaTime = deltaTime;
+//        logger.info("Update car");
         colision = false;
         if(forward) {
-            if (speed<0.0&&speed+acceleration>0.0) {
+            if (speed<0.0&&speed+acceleration*deltaTime>0.0) {
                 speed = 0.0;
-            } else if(speed != 0.0 || prevForward!=true) {
-                speed += acceleration;
+            } else if(speed<0.0 || !prevForward) {
+                speed += brakeForce*deltaTime;
             }
+            if(speed>0.0)
+                speed+=acceleration*deltaTime;
             if(speed>maxSpeed)
                 speed = maxSpeed;
         }
         if(brake) {
-            if(speed>0.0&&speed-brakeForce<0.0) {
+            if(speed>0.0&&speed-brakeForce*deltaTime<0.0) {
                 speed = 0.0;
-            } else if(speed != 0.0 || prevBrake!=true) {
-                speed -= brakeForce;
+            } else if(speed != 0.0 || !prevBrake) {
+                speed -= brakeForce*deltaTime;
             }
-            if(speed == -20.0) {
-                speed = -20.0;
+            if(speed <= -200.0) {
+                speed = -200.0;
             }
         }
+        if(!forward&&!brake) {
+            speed = speed - (speed/2)*deltaTime;
+        }
         if(left) {
-            turn -= 0.25;
+            turn -= 1.0*deltaTime;
             if(Math.abs(turn)>maxTurn) {
                 turn = -maxTurn;
             }
 
         }
         if(right) {
-            turn += 0.25;
+            turn += 1.0*deltaTime;
             if(Math.abs(turn)>maxTurn) {
                 turn = maxTurn;
             }
         }
-        rotation += turn*speed;
+        if(!right&&!left) {
+            turn = turn - turn*deltaTime*10;
+        }
+        if(speed!=0.0) {
+            rotation += turn*speed/maxSpeed;
+        }
         x += Math.sin(Math.toRadians(rotation))*speed*deltaTime;
         y -= Math.cos(Math.toRadians(rotation))*speed*deltaTime;
-        bounds.setX(x);
-        bounds.setY(y);
-        bounds.setHeight(carTransform.getFitHeight());
-        bounds.setWidth(carTransform.getFitWidth());
-        bounds.setRotate(rotation);
+//        bounds.setX(x);
+//        bounds.setY(y);
+//        bounds.setHeight(carTransform.getFitHeight()/2);
+//        bounds.setWidth(carTransform.getFitWidth()/2);
+//        bounds.setRotate(rotation);
         for(Node i: collide) {
             if(i.getBoundsInParent().intersects(bounds.getBoundsInParent())) {
                 colision = true;
             }
         }
         if(colision) {
+            logger.info("Car collision!");
             x= oldX;
             y= oldY;
             speed = 0.0;
@@ -151,7 +169,7 @@ public class Vechicle implements Steerable, Usable {
 
     @Override
     public double getX() {
-        return 0;
+        return x;
     }
 
     public Rectangle getBounds() {
@@ -160,7 +178,7 @@ public class Vechicle implements Steerable, Usable {
 
     @Override
     public double getY() {
-        return 0;
+        return y;
     }
 
     @Override

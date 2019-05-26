@@ -66,7 +66,7 @@
             <Image url="@../resources/player.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="car" fitHeight="468.0" fitWidth="191.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" x="-139.0" y="1360.0">
+      <ImageView fx:id="car" fitHeight="468.0" fitWidth="191.0" pickOnBounds="true" preserveRatio="true" x="1000.0" y="1360.0">
          <image>
             <Image url="@../resources/passat.png" />
          </image>
