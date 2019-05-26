@@ -173,9 +173,9 @@ public class Player implements Steerable {
         return y;
     }
 
-//    public int getRotation() {
-//        return rotation;
-//    }
+    public int getRotation() {
+        return rotation;
+    }
 
     @Override
     public void setUp(boolean set) {

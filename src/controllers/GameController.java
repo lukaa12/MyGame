@@ -194,12 +194,16 @@ public class GameController {
                         logger.info("name=\""+saveGameToPick+"\"");
                         logger.info(nodeTmp.getAttributes().getNamedItem("name").toString().equals("name=\""+saveGameToPick+"\""));
                         if(nodeTmp.getAttributes().getNamedItem("name").toString().equals("name=\""+saveGameToPick+"\"")) {
-                            Player player = (Player) object;
+//                            Player player = (Player) object;
                             double x,y,r;
                             x = Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerX").getNodeValue());
                             y = Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerY").getNodeValue());
                             r = Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerRotation").getNodeValue());
                             player.loadCoords(x,y,(int) r);
+                            x = Double.valueOf(nodeTmp.getAttributes().getNamedItem("vechicleX").getNodeValue());
+                            y = Double.valueOf(nodeTmp.getAttributes().getNamedItem("vechicleY").getNodeValue());
+                            r = Double.valueOf(nodeTmp.getAttributes().getNamedItem("vechicleRotation").getNodeValue());
+                            passat.loadCoords(x,y,(int) r);
                             break;
                         }
                     }
@@ -267,6 +271,9 @@ public class GameController {
                     savegame.setAttribute("playerX",Double.toString(playerTransform.getX()));
                     savegame.setAttribute("playerY",Double.toString(playerTransform.getY()));
                     savegame.setAttribute("playerRotation",Double.toString(playerTransform.getRotate()));
+                    savegame.setAttribute("vechicleX", Double.toString(passat.getX()));
+                    savegame.setAttribute("vechicleY", Double.toString(passat.getY()));
+                    savegame.setAttribute("vechicleRotation", Double.toString(car.getRotate()));
                     boolean nadPisz = false;
                     for(int index=0; index<sejwy.getChildNodes().getLength();++index) {
                         org.w3c.dom.Node nodeTmp= sejwy.getChildNodes().item(index);

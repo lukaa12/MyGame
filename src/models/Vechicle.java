@@ -97,6 +97,16 @@ public class Vechicle implements Steerable, Usable {
     }
 
     @Override
+    public void loadCoords(double aX, double aY, int aRotation) {
+        x = aX;
+        y = aY;
+        rotation = aRotation;
+        carTransform.setX(x);
+        carTransform.setY(y);
+        carTransform.setRotate(rotation);
+    }
+
+    @Override
     public void update(double deltaTime, Vector<Node> collide) {
         double oldX = x, oldY = y;
         deltaTime = deltaTime;
