@@ -1,10 +1,12 @@
 package engine;
 
 
+import controllers.GameController;
 import javafx.scene.Node;
 import models.Player;
 import models.Steerable;
 import models.Usable;
+import models.Vechicle;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
@@ -17,6 +19,7 @@ public class GameEngine {
     private Vector<Usable> usables;
     public Usable toUse;
     public boolean nowUse = false;
+    public GameController gameController;
 
     public GameEngine() {
         DOMConfigurator.configure("log4j2.xml");
@@ -48,6 +51,10 @@ public class GameEngine {
             logger.info("Using object: "+toUse.toString());
             nowUse = true;
             toUse.use();
+            if(toUse instanceof Vechicle) {
+                Vechicle passat = (Vechicle) toUse;
+                gameController.getInCar();
+            }
             nowUse = false;
         }
     }

@@ -20,6 +20,7 @@ import javafx.util.Duration;
 import models.Doors;
 import models.Player;
 import models.Steerable;
+import models.Vechicle;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.w3c.dom.Document;
@@ -45,6 +46,7 @@ public class GameController {
     private Renderer renderer;
     private Timeline timeline;
     private Timeline rendererTimeline;
+    private Vechicle passat;
     public String saveGameToPick;
     @FXML
     private ImageView mainDoors;
@@ -63,18 +65,25 @@ public class GameController {
     @FXML
     private ImageView playerTransform;
     @FXML
+    private ImageView car;
+    @FXML
     ImageView roof;
     @FXML
     ImageView garageRoof;
     @FXML
     public void initialize() {
         DOMConfigurator.configure("log4j2.xml");
+        gameEngine.gameController = this;
         Player player = new Player(playerTransform);
+        passat = new Vechicle();
+        passat.setImage(car);
         renderer = new Renderer(player, this);
         player.scene = newGamePane;
+        passat.scene = newGamePane;
         object = player;
         Doors doors = new Doors(mainDoors);
         gameEngine.addUsable(doors);
+        gameEngine.addUsable(passat);
         colliderContainer.getChildren().add(doors.collisionBox);
         logger.info("mainDoors: "+mainDoors.getX()+" "+mainDoors.getY());
         logger.info("RectDoor: "+doors.collisionBox.toString());
@@ -94,6 +103,8 @@ public class GameController {
         doors.adjustCollision(30.0,-30.0);
         gameEngine.addUsable(doors);
         colliderContainer.getChildren().add(doors.collisionBox);
+        logger.info(passat.getBounds());
+        colliderContainer.getChildren().add(passat.getBounds());
     }
 
     void setViewController(ViewController aViewController) {
@@ -114,19 +125,6 @@ public class GameController {
                 switch (keyEvent.getCode()) {
                     case ESCAPE:
                         pauseGame();
-//                        timeline.stop();
-//                        rendererTimeline.stop();
-//                        viewController.mainStackPane.getChildren().clear();
-//                        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/MenuScreen.fxml"));
-//                        Pane menuPane = null;
-//                        try {
-//                            menuPane = loader.load();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                        MenuController menuController = loader.getController();
-//                        menuController.setViewController(viewController);
-//                        viewController.mainStackPane.getChildren().add(menuPane);
                         break;
                     case W:
                         object.setUp(true);
@@ -175,11 +173,14 @@ public class GameController {
         });
         if(saveGameToPick!=null) {
             DocumentBuilder documentBuilder = null;
-            Document savegames = null;
+            Document savegames = viewController.savegames;
             try {
-                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-                documentBuilder = dbFactory.newDocumentBuilder();
-                savegames = documentBuilder.parse(this.getClass().getResourceAsStream("/resources/savegames.xml"));
+                if(savegames==null) {
+                    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                    documentBuilder = dbFactory.newDocumentBuilder();
+                    savegames = documentBuilder.parse(this.getClass().getResourceAsStream("/resources/savegames.xml"));
+                    viewController.savegames = savegames;
+                }
                 savegames.getDocumentElement().normalize();
                 org.w3c.dom.Node sejwy = savegames.getChildNodes().item(0);
                 for(int index=0; index<sejwy.getChildNodes().getLength();++index) {
@@ -240,11 +241,14 @@ public class GameController {
 
                // finalPausePane.getChildren().add(savegamePicker);
                 DocumentBuilder documentBuilder = null;
-                Document savegames = null;
+                Document savegames = viewController.savegames;
                 try {
-                    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-                    documentBuilder = dbFactory.newDocumentBuilder();
-                    savegames = documentBuilder.parse(this.getClass().getResourceAsStream("/resources/savegames.xml"));
+                    if(savegames==null) {
+                        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                        documentBuilder = dbFactory.newDocumentBuilder();
+                        savegames = documentBuilder.parse(this.getClass().getResourceAsStream("/resources/savegames.xml"));
+                        viewController.savegames = savegames;
+                    }
                     savegames.getDocumentElement().normalize();
                     logger.info(savegames.getDocumentElement().getNodeName()+" read.");
                     org.w3c.dom.Node sejwy = savegames.getChildNodes().item(0);
@@ -325,6 +329,12 @@ public class GameController {
             btn = (Button) btn1;
             btn.addEventHandler(ActionEvent.ACTION,optionsHandler);
             logger.info("Wyjdź is button");
+        }
+    }
+    public void getInCar() {
+        if(passat.isUsed) {
+            object = passat;
+            gameEngine.addObject(passat);
         }
     }
 }

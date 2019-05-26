@@ -5,11 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import org.w3c.dom.Document;
 
 import java.io.IOException;
 
 public class ViewController {
     private Scene scene;
+    Document savegames;
     @FXML
     StackPane mainStackPane;
     @FXML
