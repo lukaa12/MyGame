@@ -16,22 +16,31 @@ public class Doors implements Usable {
     private boolean typeRight =true;
     public Rectangle collisionBox;
     private boolean closed;
-    private MediaPlayer doorOpen = new MediaPlayer(new Media(this.getClass().getResource("/resources/openDoor.mp3").toString()));
-    private MediaPlayer doorClose = new MediaPlayer(new Media(this.getClass().getResource("/resources/closeDoor.mp3").toString()));
+    private MediaPlayer doorOpen;
+    private MediaPlayer doorClose;
     private ImageView doorPicture;
 
     public Doors(ImageView aDoorPicture) {
         DOMConfigurator.configure("log4j2.xml");
+        doorOpen = new MediaPlayer(new Media(this.getClass().getResource("/resources/openDoor.mp3").toString()));
+        doorClose = new MediaPlayer(new Media(this.getClass().getResource("/resources/closeDoor.mp3").toString()));
         doorPicture = aDoorPicture;
         closed = true;
         logger.info(doorPicture.toString()+doorPicture.getX()+doorPicture.getY());
         collisionBox = new Rectangle(doorPicture.getX()-30,doorPicture.getY()-40,doorPicture.getFitWidth(),doorPicture.getFitHeight());
     }
 
+    public  Doors(int test) {
+        DOMConfigurator.configure("log4j2.xml");
+        closed = true;
+    }
+
     public Doors(ImageView aDoorPicture, boolean isRightDoors, int orientation) {
         DOMConfigurator.configure("log4j2.xml");
         doorPicture = aDoorPicture;
         closed = true;
+        doorOpen = new MediaPlayer(new Media(this.getClass().getResource("/resources/openDoor.mp3").toString()));
+        doorClose = new MediaPlayer(new Media(this.getClass().getResource("/resources/closeDoor.mp3").toString()));
         logger.info(doorPicture.toString()+doorPicture.getX()+doorPicture.getY());
         collisionBox = new Rectangle(doorPicture.getX()-30,doorPicture.getY(),doorPicture.getFitWidth()+10,doorPicture.getFitHeight()+20);
         typeRight = isRightDoors;
@@ -94,5 +103,11 @@ public class Doors implements Usable {
             doorClose.seek(Duration.ZERO);
             doorClose.play();
         }
+    }
+
+    public boolean isClosed() {return  closed;}
+    public boolean isTypeRight() {return typeRight; }
+    public void setType(boolean set) {
+        typeRight = set;
     }
 }

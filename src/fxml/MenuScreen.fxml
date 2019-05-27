@@ -34,7 +34,7 @@
             <Font name="System Bold" size="35.0" />
          </font>
       </Button>
-      <Label layoutX="584.0" layoutY="203.0" text="Janusz The Game" textFill="#521fc2">
+      <Label layoutX="584.0" layoutY="203.0" text="The SandBoxGame" textFill="#521fc2">
          <font>
             <Font name="Broadway" size="96.0" />
          </font>

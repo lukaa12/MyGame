@@ -52,6 +52,12 @@ public class Vechicle implements Steerable, Usable {
         logger.info("Accererate car: "+forward);
     }
 
+    public boolean isUp() {
+        return forward;
+    }
+
+    public boolean isDown() { return brake;}
+
     @Override
     public void setDown(boolean set) {
         brake = set;
@@ -101,6 +107,8 @@ public class Vechicle implements Steerable, Usable {
         x = aX;
         y = aY;
         rotation = aRotation;
+        if(carTransform==null)
+            return;
         carTransform.setX(x);
         carTransform.setY(y);
         carTransform.setRotate(rotation);
