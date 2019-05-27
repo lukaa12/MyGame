@@ -47,6 +47,7 @@ public class GameController {
     private Timeline timeline;
     private Timeline rendererTimeline;
     private Vechicle passat;
+    private Vechicle auto2;
     private Player player;
     public String saveGameToPick;
     @FXML
@@ -68,6 +69,8 @@ public class GameController {
     @FXML
     private ImageView car;
     @FXML
+    private ImageView car2;
+    @FXML
     ImageView roof;
     @FXML
     ImageView garageRoof;
@@ -77,14 +80,18 @@ public class GameController {
         gameEngine.gameController = this;
         player = new Player(playerTransform);
         passat = new Vechicle();
+        auto2 = new Vechicle();
         passat.setImage(car);
         renderer = new Renderer(player, this);
+        auto2.setImage(car2);
         player.scene = newGamePane;
         passat.scene = newGamePane;
+        auto2.scene = newGamePane;
         object = player;
         Doors doors = new Doors(mainDoors);
         gameEngine.addUsable(doors);
         gameEngine.addUsable(passat);
+        gameEngine.addUsable(auto2);
         colliderContainer.getChildren().add(doors.collisionBox);
         logger.info("mainDoors: "+mainDoors.getX()+" "+mainDoors.getY());
         logger.info("RectDoor: "+doors.collisionBox.toString());
