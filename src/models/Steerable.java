@@ -15,6 +15,7 @@ public interface Steerable {
     void drawMe();
     void setImage();
     void loadCoords(double aX, double aY, int aRotation);
+    Vector<String> stateToSave();
     void update(double deltaTime, Vector<Node> collide);
     double getX();
     double getY();

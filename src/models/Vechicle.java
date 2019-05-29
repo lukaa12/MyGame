@@ -26,24 +26,29 @@ public class Vechicle implements Steerable, Usable {
     public boolean prevForward, prevBrake, isUsed=false;
     public Pane scene;
 
-    public Vechicle() {
+    public Vechicle(ImageView aCarTransform) {
         DOMConfigurator.configure("log4j2.xml");
-        maxTurn = 1.2;
-        brakeForce = 100.0;
-        maxSpeed = 400.0;
-        bounds = new Rectangle();
-    }
-
-    public void setImage(ImageView aCarTransform) {
         carTransform = aCarTransform;
         x = carTransform.getX();
         y = carTransform.getY();
         rotation = aCarTransform.getRotate();
+        bounds = new Rectangle();
         bounds.setX(x);
         bounds.setY(y);
         bounds.setHeight(0);
         bounds.setWidth(0);
         bounds.setRotate(rotation);
+        maxTurn = 1.2;
+        brakeForce = 100.0;
+        maxSpeed = 400.0;
+    }
+
+    public Vechicle() {
+        DOMConfigurator.configure("log4j2.xml");
+        maxTurn = 1.2;
+        brakeForce = 100.0;
+        maxSpeed = 400.0;
+        bounds = null;
     }
 
     @Override
@@ -115,6 +120,15 @@ public class Vechicle implements Steerable, Usable {
     }
 
     @Override
+    public Vector<String> stateToSave() {
+        Vector<String> state = new Vector<>();
+        state.add(String.valueOf(rotation));
+        state.add(String.valueOf(x));
+        state.add(String.valueOf(y));
+        return state;
+    }
+
+    @Override
     public void update(double deltaTime, Vector<Node> collide) {
         double oldX = x, oldY = y;
         colision = false;
@@ -173,12 +187,12 @@ public class Vechicle implements Steerable, Usable {
                 colision = true;
             }
         }
-        if(colision) {
-            logger.info("Car collision!");
-            x= oldX;
-            y= oldY;
-            speed = 0.0;
-        }
+//        if(colision) {
+//            logger.info("Car collision!");
+//            x= oldX;
+//            y= oldY;
+//            speed = 0.0;
+//        }
         prevForward = forward;
         prevBrake = brake;
     }

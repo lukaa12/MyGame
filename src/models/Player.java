@@ -160,6 +160,15 @@ public class Player implements Steerable {
         rotation = aRotation;
     }
 
+    @Override
+    public Vector<String> stateToSave() {
+        Vector<String> state = new Vector<>();
+        state.add(String.valueOf(rotation));
+        state.add(String.valueOf(x));
+        state.add(String.valueOf(y));
+        return state;
+    }
+
     public ImageView getPlayerTransform() {
         return playerTransform;
     }

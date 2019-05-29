@@ -29,40 +29,35 @@ public class GameEngine {
     }
 
     public void run() {
-        Player player = null;
-        Vechicle car = null;
         double deltaSecs = 0.016;
-//        logger.info(objectsToUpdate.size());
+
         for(Steerable obj: objectsToUpdate) {
-//            logger.info(obj.toString());
             obj.update(deltaSecs,collisions);
-            if(obj instanceof Player) {
-                player = (Player) obj;
-            }
-            if(obj instanceof Vechicle) {
-                car = (Vechicle) obj;
-            }
         }
         toUse = null;
         for(Usable use: usables) {
-            if(player!=null&&use.isReachable(player.getX(),player.getY())) {
+            if(use.isReachable(gameController.getPlayer().getX(),gameController.getPlayer().getY())) {
                 toUse = use;
+//                logger.info("Can use: "+ toUse.toString());
                 break;
             }
-        }
-        if(car!=null&&car.isUsed) {
-            toUse = car;
         }
     }
 
     public void interaction() {
+
         if(!nowUse&&toUse!=null) {
             logger.info("Using object: "+toUse.toString());
             nowUse = true;
             toUse.use();
+            if(gameController.getPlayer() instanceof Vechicle) {
+                gameController.getOutCar();
+                nowUse = false;
+                return;
+            }
             if(toUse instanceof Vechicle) {
-                Vechicle passat = (Vechicle) toUse;
-                gameController.getInCar();
+                Vechicle auto = (Vechicle) toUse;
+                gameController.getInCar(auto);
             }
             nowUse = false;
         }

@@ -17,15 +17,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-import models.Doors;
-import models.Player;
-import models.Steerable;
-import models.Vechicle;
+import models.*;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -35,20 +30,19 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.TimerTask;
+import java.util.Vector;
 
 
 public class GameController {
     private Logger logger = Logger.getLogger(GameController.class);
     private boolean paused = false;
     private ViewController viewController;
-    private Steerable object;
+    private Vector<Steerable> objects = new Vector<>();
+    private Steerable player;
     private GameEngine gameEngine = new GameEngine();
     private Renderer renderer;
     private Timeline timeline;
     private Timeline rendererTimeline;
-    private Vechicle passat;
-    private Vechicle auto2;
-    private Player player;
     public String saveGameToPick;
     @FXML
     private ImageView mainDoors;
@@ -79,19 +73,29 @@ public class GameController {
         DOMConfigurator.configure("log4j2.xml");
         gameEngine.gameController = this;
         player = new Player(playerTransform);
-        passat = new Vechicle();
-        auto2 = new Vechicle();
-        passat.setImage(car);
+        objects.add(player);
+        objects.add(new Vechicle(car2));
+        objects.add(new Vechicle(car));
+        for(Steerable obj: objects) {
+            if (obj instanceof Vechicle) {
+                logger.info("Adding car: "+obj.toString());
+                Vechicle auto = (Vechicle) obj;
+//                auto.setImage(car);
+                auto.scene = newGamePane;
+                gameEngine.addUsable(auto);
+                gameEngine.addObject(auto); //maybe
+                colliderContainer.getChildren().add(auto.getBounds());
+            }
+            else if (obj instanceof Player) {
+                gameEngine.addObject(player);
+                logger.info("Adding person: "+obj.toString());
+                Player human = (Player) obj;
+                human.scene = newGamePane;
+            }
+        }
         renderer = new Renderer(player, this);
-        auto2.setImage(car2);
-        player.scene = newGamePane;
-        passat.scene = newGamePane;
-        auto2.scene = newGamePane;
-        object = player;
         Doors doors = new Doors(mainDoors);
         gameEngine.addUsable(doors);
-        gameEngine.addUsable(passat);
-        gameEngine.addUsable(auto2);
         colliderContainer.getChildren().add(doors.collisionBox);
         logger.info("mainDoors: "+mainDoors.getX()+" "+mainDoors.getY());
         logger.info("RectDoor: "+doors.collisionBox.toString());
@@ -111,17 +115,18 @@ public class GameController {
         doors.adjustCollision(30.0,-30.0);
         gameEngine.addUsable(doors);
         colliderContainer.getChildren().add(doors.collisionBox);
-        logger.info(passat.getBounds());
-        colliderContainer.getChildren().add(passat.getBounds());
     }
 
     void setViewController(ViewController aViewController) {
         viewController = aViewController;
-        gameEngine.addObject(object);
+
         for(Node i: colliderContainer.getChildren()) {
             gameEngine.addCollisions(i);
         }
         timeline = new Timeline(new KeyFrame(Duration.millis(16), e -> gameEngine.run()));
+        if(player == null) {
+            logger.info("Error player is null!");
+        }
         rendererTimeline = new Timeline(new KeyFrame(Duration.millis(16), e -> renderer.run()));
         timeline.setCycleCount(Animation.INDEFINITE);
         rendererTimeline.setCycleCount(Animation.INDEFINITE);
@@ -135,22 +140,22 @@ public class GameController {
                         pauseGame();
                         break;
                     case W:
-                        object.setUp(true);
+                        player.setUp(true);
                         break;
                     case A:
-                        object.setLeft(true);
+                        player.setLeft(true);
                         break;
                     case S:
-                        object.setDown(true);
+                        player.setDown(true);
                         break;
                     case D:
-                        object.setRight(true);
+                        player.setRight(true);
                         break;
                     case SPACE:
-                        object.setJump(true);
+                        player.setJump(true);
                         break;
                     case SHIFT:
-                        object.setSprint(true);
+                        player.setSprint(true);
                         break;
 
                 }
@@ -159,26 +164,24 @@ public class GameController {
         this.viewController.getScene().setOnKeyReleased(keyEvent -> {
             switch (keyEvent.getCode()) {
                 case W:
-                    object.setUp(false);
+                    player.setUp(false);
                     break;
                 case A:
-                    object.setLeft(false);
+                    player.setLeft(false);
                 case S:
-                    object.setDown(false);
+                    player.setDown(false);
                     break;
                 case D:
-                    object.setRight(false);
+                    player.setRight(false);
                     break;
                 case SPACE:
-                    object.setJump(false);
+                    player.setJump(false);
                     break;
                 case SHIFT:
-                    object.setSprint(false);
+                    player.setSprint(false);
                     break;
                 case F:
                     gameEngine.interaction();
-                    if(passat.isUsed)
-                        getInCar();
                     break;
             }
         });
@@ -201,16 +204,22 @@ public class GameController {
                         logger.info("name=\""+saveGameToPick+"\"");
                         logger.info(nodeTmp.getAttributes().getNamedItem("name").toString().equals("name=\""+saveGameToPick+"\""));
                         if(nodeTmp.getAttributes().getNamedItem("name").toString().equals("name=\""+saveGameToPick+"\"")) {
-//                            Player player = (Player) object;
-                            double x,y,r;
-                            x = Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerX").getNodeValue());
-                            y = Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerY").getNodeValue());
-                            r = Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerRotation").getNodeValue());
-                            player.loadCoords(x,y,(int) r);
-                            x = Double.valueOf(nodeTmp.getAttributes().getNamedItem("vechicleX").getNodeValue());
-                            y = Double.valueOf(nodeTmp.getAttributes().getNamedItem("vechicleY").getNodeValue());
-                            r = Double.valueOf(nodeTmp.getAttributes().getNamedItem("vechicleRotation").getNodeValue());
-                            passat.loadCoords(x,y,(int) r);
+                           int i=1;
+                            for(Steerable object: objects) {
+                               if(object instanceof Player) {
+                                   logger.info("Loading player");
+                                   object.loadCoords(Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerX").getNodeValue()),
+                                           Double.valueOf(nodeTmp.getAttributes().getNamedItem("playerY").getNodeValue()),
+                                           Integer.valueOf(nodeTmp.getAttributes().getNamedItem("playerRotation").getNodeValue()));
+                               }
+                               else if(object instanceof Vechicle) {
+                                   logger.info("Loading car "+i);
+                                   double tmp =  Double.valueOf(nodeTmp.getAttributes().getNamedItem("vechicle"+i+"Rotation").getNodeValue());
+                                   object.loadCoords(Double.valueOf(nodeTmp.getAttributes().getNamedItem("vechicle"+i+"X").getNodeValue()),
+                                           Double.valueOf(nodeTmp.getAttributes().getNamedItem("vechicle"+i+"Y").getNodeValue()), ((int) tmp));
+                                    ++i;
+                               }
+                           }
                             break;
                         }
                     }
@@ -220,6 +229,7 @@ public class GameController {
             }
         }
     }
+    public Steerable getPlayer() { return  player; }
 
     private void pauseGame() {
         if(paused)
@@ -234,8 +244,8 @@ public class GameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        pausePane.setTranslateX(object.getX()-300.0);
-        pausePane.setTranslateY(object.getY()-250.0);
+        pausePane.setTranslateX(player.getX()-300.0);
+        pausePane.setTranslateY(player.getY()-250.0);
         ChoiceBox<String> savegamePicker = new ChoiceBox<>(FXCollections.observableArrayList("SAVE1","SAVE2","SAVE3","SAVE4","SAVE5"));
         pausePane.getChildren().add(savegamePicker);
         savegamePicker.setTranslateX(400.0);
@@ -253,8 +263,6 @@ public class GameController {
             }
             if(actionEvent.getSource().toString().equals("Button[id=saveButton, styleClass=button]\'ZAPISZ\'")) {
                 logger.info("SAVE");
-
-               // finalPausePane.getChildren().add(savegamePicker);
                 DocumentBuilder documentBuilder = null;
                 Document savegames = viewController.savegames;
                 try {
@@ -275,12 +283,11 @@ public class GameController {
                         return;
                     }
                     savegame.setAttribute("name",savegamePicker.getValue());
-                    savegame.setAttribute("playerX",Double.toString(playerTransform.getX()));
-                    savegame.setAttribute("playerY",Double.toString(playerTransform.getY()));
-                    savegame.setAttribute("playerRotation",Double.toString(playerTransform.getRotate()));
-                    savegame.setAttribute("vechicleX", Double.toString(passat.getX()));
-                    savegame.setAttribute("vechicleY", Double.toString(passat.getY()));
-                    savegame.setAttribute("vechicleRotation", Double.toString(car.getRotate()));
+                    int no = 0;
+                    for(Steerable object: objects) {
+                        saveObject(savegame,object,no);
+                        ++no;
+                    }
                     boolean nadPisz = false;
                     for(int index=0; index<sejwy.getChildNodes().getLength();++index) {
                         org.w3c.dom.Node nodeTmp= sejwy.getChildNodes().item(index);
@@ -298,9 +305,8 @@ public class GameController {
                     if(!nadPisz) {
                         sejwy.appendChild(savegame);
                     }
-//                     transformer = null;
                     Transformer transformer = TransformerFactory.newInstance().newTransformer();
-                    String path = new String(this.getClass().getResource("/resources/savegames.xml").toString());
+                    String path = this.getClass().getResource("/resources/savegames.xml").toString();
                     logger.info(path);
                     path = path.replaceFirst("out/production/MyGame/resources/savegames.xml","src/resources/savegames.xml");
                     path = path.replaceFirst("file:/C","C");
@@ -349,26 +355,44 @@ public class GameController {
             logger.info("Wyjdź is button");
         }
     }
-    public void getInCar() {
-        if(passat.isUsed) {
-            object = passat;
-            gameEngine.addObject(passat);
-            renderer.object = passat;
-            colliderContainer.getChildren().remove(passat.getBounds());
-            gameEngine.removeCollisions(passat.getBounds());
-            playerTransform.setVisible(false);
+
+    private void saveObject(org.w3c.dom.Element savegame, Steerable object, int no) {
+        Vector<String> values = object.stateToSave();
+        if(object instanceof Player) {
+            savegame.setAttribute("playerRotation",values.get(0));
+            savegame.setAttribute("playerX",values.get(1));
+            savegame.setAttribute("playerY",values.get(2));
         }
-        else {
-            object = player;
-            gameEngine.removeObject(passat);
-            gameEngine.removeObject(passat);
-            renderer.object = player;
-            gameEngine.addCollisions(passat.getBounds());
-            player.setX(passat.getX()-70);
-            player.setY(passat.getY()+150);
-            playerTransform.setVisible(true);
+        else if(object instanceof Vechicle) {
+            savegame.setAttribute("vechicle"+no+"Rotation",values.get(0));
+            savegame.setAttribute("vechicle"+no+"X",values.get(1));
+            savegame.setAttribute("vechicle"+no+"Y",values.get(2));
         }
     }
+
+    public void getInCar(Vechicle aCar) {
+
+            player = aCar;
+            gameEngine.addObject(aCar);
+            renderer.object = aCar;
+            colliderContainer.getChildren().remove(aCar.getBounds());
+            gameEngine.removeCollisions(aCar.getBounds());
+            playerTransform.setVisible(false);
+    }
+
+    public void getOutCar() {
+        gameEngine.addCollisions(((Vechicle) player).getBounds());
+        for(Steerable obj: objects) {
+            if(obj instanceof Player) {
+                ((Player) obj).setX(player.getX());
+                ((Player) obj).setY(player.getY());
+                renderer.object = obj;
+                player = obj;
+                playerTransform.setVisible(true);
+            }
+        }
+    }
+
 }
 
 class Renderer extends TimerTask {
